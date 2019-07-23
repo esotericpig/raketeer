@@ -6,7 +6,7 @@
 [![Changelog](https://img.shields.io/badge/changelog-md-%23A0522D.svg?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/github/license/esotericpig/raketeer.svg?color=%23A0522D&style=for-the-badge)](LICENSE.txt)
 
-My Ruby Rake Tasks.
+Extra Ruby Rake Tasks.
 
 Name comes from Rocketeer.
 
