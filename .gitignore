@@ -1,0 +1,10 @@
+.env
+Gemfile.lock
+
+*.gem
+*.rbc
+
+/.yardoc/
+/doc/
+/pkg/
+/stock/
