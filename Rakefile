@@ -24,6 +24,8 @@ require 'bundler/gem_tasks'
 
 require 'rake/clean'
 
+require 'raketeer/raketeers'
+
 task default: []
 
 CLEAN.exclude('.git/','stock/')
