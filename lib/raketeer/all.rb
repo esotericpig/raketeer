@@ -31,6 +31,6 @@ module Raketeer
   # @author Jonathan Bradley Whited (@esotericpig)
   # @since  0.1.0
   ###
-  module Raketeers
+  module All
   end
 end
