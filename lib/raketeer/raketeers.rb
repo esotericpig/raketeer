@@ -21,8 +21,7 @@
 #++
 
 
-require 'raketeer'
-
+require 'raketeer/irb'
 require 'raketeer/nokogiri_installs'
 
 module Raketeer
@@ -35,5 +34,3 @@ module Raketeer
   module Raketeers
   end
 end
-
-Raketeer::IRBTask.new() # @since 0.1.0
