@@ -4,6 +4,16 @@ Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.1.0...master)
 
+## [v0.2.0] - 2019-XX-XX
+### Added
+- All (lib/raketeer/all.rb); used to be Raketeers
+    - `require 'raketeer/all'`
+- IRB (lib/raketeer/irb.rb)
+    - `require 'raketeer/irb'`
+
+### Removed
+- Raketeers (lib/raketeer/raketeers.rb); renamed to All
+
 ## [v0.1.0] - 2019-07-23
 ### Added
 - .gitignore
