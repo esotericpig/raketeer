@@ -24,7 +24,7 @@ require 'bundler/gem_tasks'
 
 require 'rake/clean'
 
-require 'raketeer/raketeers'
+require 'raketeer/all'
 
 task default: []
 
