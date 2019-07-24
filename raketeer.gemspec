@@ -33,7 +33,7 @@ Gem::Specification.new() do |spec|
   spec.licenses    = ['LGPL-3.0-or-later']
   spec.homepage    = 'https://github.com/esotericpig/raketeer'
   spec.summary     = 'Extra Ruby Rake Tasks.'
-  spec.description = spec.summary
+  spec.description = "#{spec.summary}. Tasks for IRB, Nokogiri, etc."
   
   spec.metadata = {
     'bug_tracker_uri' => 'https://github.com/esotericpig/raketeer/issues',
@@ -44,7 +44,8 @@ Gem::Specification.new() do |spec|
   
   spec.require_paths = ['lib']
   
-  spec.files = Dir.glob(File.join("{#{spec.require_paths.join(',')},test,yard}",'**','*.{erb,rb}')) +
+  spec.files = Dir.glob(File.join("{#{spec.require_paths.join(',')}}",'**','*.{erb,rb}')) +
+               Dir.glob(File.join('{test,yard}','**','*.{erb,rb}')) +
                %W( Gemfile #{spec.name}.gemspec Rakefile ) +
                %w( CHANGELOG.md LICENSE.txt README.md )
   
