@@ -21,15 +21,15 @@
 #++
 
 
-require 'raketeer/irb'
-require 'raketeer/nokogiri_installs'
+require 'raketeer/irb' # @since 0.2.0
+require 'raketeer/nokogiri_installs' # @since 0.1.0
 
 module Raketeer
   ###
   # Defines all Raketeer tasks in your Rakefile.
   # 
   # @author Jonathan Bradley Whited (@esotericpig)
-  # @since  0.1.0
+  # @since  0.2.0
   ###
   module All
   end
