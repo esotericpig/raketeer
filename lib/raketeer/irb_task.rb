@@ -82,9 +82,8 @@ module Raketeer
       
       if main_file.length == 1
         basename = File.basename(main_file[0],'.*')
-        main_file = File.join('lib',"#{basename}.rb")
         
-        return basename if File.exist?(main_file)
+        return basename
       end
       
       return nil
