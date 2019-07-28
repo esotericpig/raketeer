@@ -71,20 +71,12 @@ module Raketeer
       # First, try the lib/ dir
       main_file = Dir.glob(File.join('lib','*.rb'))
       
-      if main_file.length == 1
-        basename = File.basename(main_file[0],'.*')
-        
-        return basename
-      end
+      return File.basename(main_file[0],'.*') if main_file.length == 1
       
       # Next, try the Gemspec
       main_file = Dir.glob('*.gemspec')
       
-      if main_file.length == 1
-        basename = File.basename(main_file[0],'.*')
-        
-        return basename
-      end
+      return File.basename(main_file[0],'.*') if main_file.length == 1
       
       return nil
     end
