@@ -8,8 +8,6 @@
 
 Extra Ruby Rake Tasks.
 
-Name comes from Rocketeer.
-
 ## Contents
 
 - [Setup](#setup)
