@@ -51,8 +51,21 @@ Gem::Specification.new() do |spec|
   
   spec.required_ruby_version = '>= 2.1.10'
   
+  # TODO: also add the below comment to the README & reword for user
+  # If it is a dependency specific to a task, then it should probably be added
+  # as a dev dependency (not a runtime dependency) so that a bunch of
+  # non-essential dependencies (to the user) are not added.
+  # 
+  # For example, if the user only uses the Nokogiri tasks, then they don't need
+  # the IRB dependency.
+  # 
+  # Therefore, it is up to the user to add the dependencies they need.
+  # If the user uses the IRB task, then they will have to add 'irb' as a
+  # development dependency in their own project's Gemspec.
+  
   spec.add_runtime_dependency 'rake' #,'~> 12.3'
   
   spec.add_development_dependency 'bundler','~> 1.17'
+  spec.add_development_dependency 'irb'    ,'~> 1.0'  # For IRBTask
   spec.add_development_dependency 'yard'   ,'~> 0.9'  # For doc
 end
