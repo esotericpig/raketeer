@@ -24,9 +24,11 @@ require 'bundler/gem_tasks'
 
 require 'rake/clean'
 
-require 'raketeer/all'
-
 task default: []
 
 CLEAN.exclude('.git/','stock/')
 CLOBBER.include('doc/')
+
+namespace :rt do
+  require 'raketeer/all'
+end
