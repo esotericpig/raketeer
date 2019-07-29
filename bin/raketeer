@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+# frozen_string_literal: true
+
+#--
+# This file is part of Raketeer.
+# Copyright (c) 2019 Jonathan Bradley Whited (@esotericpig)
+# 
+# Raketeer is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# Raketeer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public License
+# along with Raketeer.  If not, see <https://www.gnu.org/licenses/>.
+#++
+
+
+require 'optparse'
+
+require 'raketeer/version'
+
+###
+# This file isn't actually included in the Gem package.
+# It's only used for testing RunTask.
+# 
+# @author Jonathan Bradley Whited (@esotericpig)
+# @since  0.2.2
+###
+
+op = OptionParser.new() do |op|
+  op.banner = "Usage: #{op.program_name} [options]"
+  
+  op.on('-h','--help','Print this help') do
+    puts op
+    exit
+  end
+  op.on('-v','--version','Print the version') do
+    puts "#{op.program_name} v#{Raketeer::VERSION}"
+    exit
+  end
+end
+
+op.parse!()
+puts op
