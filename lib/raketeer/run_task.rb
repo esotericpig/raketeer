@@ -84,7 +84,7 @@ module Raketeer
           end
         end
         
-        # There are args for the run command?
+        # Are there args for the run command?
         if first_arg_index >= 0 && first_arg_index < ARGV.length
           run_args = ARGV.slice!(first_arg_index..-1)
           
