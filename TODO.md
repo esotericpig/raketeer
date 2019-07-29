@@ -1,6 +1,6 @@
 # TODO | Raketeer
 
-## [Next Release]
+## [v0.2.2]
 - [ ] A task to bump/change the version?
     - Files:
         - *lib/projectname/version.rb*
@@ -11,6 +11,6 @@
         - rake version[,,+1,]
         - rake version[,,,pre]
         - rake version # Just outputs current version
-- [ ] Add RunTask
+- [x] Add RunTask
 - [ ] Add ZipTask?
     - ShFileTask or CompressTask as parent?
