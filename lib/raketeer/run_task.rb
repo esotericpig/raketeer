@@ -52,8 +52,8 @@ module Raketeer
       @warning = true
       
       @run_cmd = ['ruby']
-      @run_cmd += ['-r','rubygems']
-      @run_cmd += ['-r','bundler/setup']
+      @run_cmd.push('-r','rubygems')
+      @run_cmd.push('-r','bundler/setup')
       
       # Yield before using changeable vars
       yielf self if block_given?()
@@ -84,6 +84,9 @@ module Raketeer
           end
         end
         
+        # In case this is called more than once in some way
+        sh_cmd = @run_cmd.dup()
+        
         # Are there args for the run command?
         if first_arg_index >= 0 && first_arg_index < ARGV.length
           run_args = ARGV.slice!(first_arg_index..-1)
@@ -92,10 +95,10 @@ module Raketeer
           # For older versions of rake, you didn't need "--", so check for it.
           run_args.slice!(0) if run_args[0] == '--'
           
-          @run_cmd += run_args
+          sh_cmd.push(*run_args)
         end
         
-        sh(*@run_cmd)
+        sh(*sh_cmd)
       end
     end
   end
