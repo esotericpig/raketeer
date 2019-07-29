@@ -25,6 +25,8 @@ require 'rake'
 
 require 'rake/tasklib'
 
+require 'raketeer/util'
+
 module Raketeer
   ###
   # @author Jonathan Bradley Whited (@esotericpig)
@@ -43,7 +45,7 @@ module Raketeer
       super()
       
       @description = 'Open an irb session loaded with this library'
-      @main_module = find_main_module()
+      @main_module = Util.find_main_module()
       @name = name
       @warning = true
       
@@ -65,20 +67,6 @@ module Raketeer
       task @name do |task,args|
         sh(*@irb_cmd)
       end
-    end
-    
-    def find_main_module()
-      # First, try the lib/ dir
-      main_file = Dir.glob(File.join('lib','*.rb'))
-      
-      return File.basename(main_file[0],'.*') if main_file.length == 1
-      
-      # Next, try the Gemspec
-      main_file = Dir.glob('*.gemspec')
-      
-      return File.basename(main_file[0],'.*') if main_file.length == 1
-      
-      return nil
     end
   end
 end
