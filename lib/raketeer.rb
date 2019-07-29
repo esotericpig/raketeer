@@ -23,6 +23,7 @@
 
 require 'raketeer/irb_task'
 require 'raketeer/nokogiri_install_tasks'
+require 'raketeer/run_task'
 require 'raketeer/version'
 
 ###
