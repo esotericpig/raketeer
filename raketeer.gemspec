@@ -20,7 +20,7 @@
 #++
 
 
-lib = File.expand_path('../lib',__FILE__)
+lib = File.expand_path(File.join('..','lib'),__FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'raketeer/version'
@@ -33,7 +33,7 @@ Gem::Specification.new() do |spec|
   spec.licenses    = ['LGPL-3.0-or-later']
   spec.homepage    = 'https://github.com/esotericpig/raketeer'
   spec.summary     = 'Extra Ruby Rake Tasks.'
-  spec.description = "#{spec.summary} Tasks for IRB, Nokogiri, etc."
+  spec.description = 'Extra Ruby Rake Tasks for IRB, Nokogiri, running, etc.'
   
   spec.metadata = {
     'bug_tracker_uri' => 'https://github.com/esotericpig/raketeer/issues',
