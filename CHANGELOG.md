@@ -2,7 +2,17 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.1...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.2...master)
+
+## [v0.2.2] - 2019-07-29
+### Changed
+- Refactored some code (minor)
+- Changed some documentation (minor)
+
+### Added
+- RunTask & 'raketeer/run'
+- Util
+- bin/raketeer (for testing purposes only, not included in the Gem package)
 
 ## [v0.2.1] - 2019-07-24
 ### Changed
