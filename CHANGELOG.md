@@ -2,7 +2,11 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.2...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.3...master)
+
+## [v0.2.3] - 2019-07-30
+### Fixed
+- Fixed 'yield' typo in some tasks
 
 ## [v0.2.2] - 2019-07-29
 ### Changed
