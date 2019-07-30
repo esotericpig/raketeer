@@ -55,8 +55,7 @@ module Raketeer
       @run_cmd.push('-r','rubygems')
       @run_cmd.push('-r','bundler/setup')
       
-      # Yield before using changeable vars
-      yielf self if block_given?()
+      yield self if block_given?()
       
       @executable = Util.find_main_executable(@bin_dir) if @executable.nil?()
       

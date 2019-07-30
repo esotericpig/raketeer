@@ -53,8 +53,7 @@ module Raketeer
       @irb_cmd.push('-r','rubygems')
       @irb_cmd.push('-r','bundler/setup')
       
-      # Yield before using changeable vars
-      yielf self if block_given?()
+      yield self if block_given?()
       
       @irb_cmd.push('-r',@main_module) unless @main_module.nil?()
       @irb_cmd << '-w' if @warning
