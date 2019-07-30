@@ -23,4 +23,16 @@
 
 module Raketeer
   VERSION = '0.2.3'
+  
+  DEP_VERSIONS = {
+    'irb' => '~> 1.0'
+  }
+  
+  def self.try_require_dev(gem_name)
+    begin
+      require gem_name
+    rescue LoadError => e
+      raise e.exception("Add development dependency: '#{gem_name}','#{DEP_VERSIONS[gem_name]}'")
+    end
+  end
 end
