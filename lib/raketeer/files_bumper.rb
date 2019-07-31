@@ -34,6 +34,7 @@ module Raketeer
     attr_accessor :changes
     attr_reader :dry_run
     attr_reader :files
+    attr_accessor :init_per_file
     attr_accessor :line
     attr_accessor :lines
     attr_accessor :sem_ver
@@ -44,14 +45,22 @@ module Raketeer
     alias_method :dry_run?,:dry_run
     alias_method :version_bumped?,:version_bumped
     
-    def initialize(files,bump_ver,dry_run)
+    def initialize(files,bump_ver,dry_run,&init_per_file)
       @bump_ver = bump_ver
       @bump_ver_empty = bump_ver.empty?()
       @dry_run = dry_run
       @files = files.to_a()
+      @init_per_file = init_per_file
       @sem_ver = nil
       @version = nil
       @version_bumped = false
+    end
+    
+    def add_change(line,push: true)
+      puts "+ #{line}"
+      
+      @changes += 1
+      @lines << line if push
     end
     
     def bump_files(&block)
@@ -67,6 +76,8 @@ module Raketeer
         @changes = 0 # For possible future use
         @lines = []
         @sem_ver = nil
+        
+        @init_per_file.call(self) unless @init_per_file.nil?()
         
         File.foreach(filename) do |line|
           @line = line
@@ -98,7 +109,7 @@ module Raketeer
       end
     end
     
-    def bump_line(ver_line)
+    def bump_line(ver_line,add_change: true)
       @sem_ver = SemVer.parse_line(ver_line)
       
       return false if @sem_ver.nil?()
@@ -119,9 +130,7 @@ module Raketeer
             @version_bumped = true
           end
           
-          puts "+ #{@line}"
-          
-          @changes += 1
+          self.add_change(@line,push: false) if add_change
           
           return true
         end

@@ -21,6 +21,7 @@
 #++
 
 
+require 'date'
 require 'rake'
 
 require 'rake/tasklib'
@@ -30,16 +31,15 @@ require 'raketeer/files_bumper'
 require 'raketeer/sem_ver'
 require 'raketeer/util'
 
-# TODO: bump_bundle boolean instance var? and bump:bundle task?
-# TODO: bump:init task to create version.rb file, etc. version param/ENVs
-
 module Raketeer
   ###
   # @author Jonathan Bradley Whited (@esotericpig)
   # @since  0.2.4
   ###
   class BumpTask < Rake::TaskLib
+    attr_accessor :bump_bundle
     attr_accessor :bump_files # Looks for a version number
+    attr_accessor :bundle_cmd
     attr_accessor :changelogs # Looks for 'Unreleased' & a header
     attr_accessor :description
     attr_accessor :dry_run
@@ -53,7 +53,9 @@ module Raketeer
     def initialize(name=:bump)
       super()
       
+      @bump_bundle = false
       @bump_files = Rake::FileList[]
+      @bundle_cmd = 'bundle'
       @changelogs = Rake::FileList['CHANGELOG.md']
       @dry_run = false
       @git_msg = %q(git commit -m 'Bump version to v%{version}')
@@ -127,6 +129,12 @@ module Raketeer
           bump_all(bump_ver)
         end
         
+        desc 'Bump the bundle version'
+        task :bundle do
+          check_env()
+          bump_bundle_file()
+        end
+        
         desc "Show the help/usage for #{name} tasks"
         task :help do
           print_help()
@@ -144,10 +152,14 @@ module Raketeer
       
       sem_ver.compact!()
       
+      if @bump_bundle && !bump_ver.empty?() && !sem_ver.empty?()
+        bump_bundle_file()
+      end
+      
       # Always output it, in case the user just wants to see what the git message
       # should be without making changes.
       if !sem_ver.empty?()
-        puts 'Git:'
+        puts '[Git]:'
         puts '= ' + (@git_msg % {version: sem_ver[0].to_s()})
       end
     end
@@ -164,8 +176,78 @@ module Raketeer
       return bumper.version
     end
     
+    def bump_bundle_file()
+      sh_cmd = [@bundle_cmd,'list']
+      
+      puts "[#{sh_cmd.join(' ')}]:"
+      
+      if @dry_run
+        puts '= Nothing written (dry run)'
+        
+        return
+      end
+      
+      sh(*sh_cmd,{:verbose => false})
+    end
+    
+    # https://keepachangelog.com/en/1.0.0/
     def bump_changelogs(bump_ver)
-      return nil
+      bumper = FilesBumper.new(@changelogs,bump_ver,@dry_run) do
+        @header_bumped = false
+        @unreleased_bumped = false
+      end
+      header_regex = /\A\s*##\s*\[[^\]]+\]/
+      unreleased_regex = /\A.*Unreleased.*http/
+      
+      bumper.bump_files() do
+        if @header_bumped && @unreleased_bumped
+          if bumper.bump_ver_empty?()
+            break
+          else
+            next
+          end
+        end
+        
+        if bumper.line =~ unreleased_regex
+          next if @unreleased_bumped
+          
+          unreleased = bumper.line.split(unreleased_regex,2)
+          
+          next if unreleased.length != 2
+          next if (unreleased = unreleased[1].strip()).empty?()
+          
+          unreleased = unreleased.split('...',2)[0].strip()
+          
+          next if unreleased.empty?()
+          
+          @unreleased_bumped = true if bumper.bump_line(unreleased)
+        elsif bumper.line =~ header_regex
+          next if @header_bumped
+          
+          header = bumper.line.split(/[\[\]]+/,3)
+          
+          next if header.length < 2
+          next if (header = header[1].strip()).empty?()
+          
+          orig_line = bumper.line.dup()
+          
+          if bumper.bump_line(header,add_change: false)
+            @header_bumped = true
+            
+            if !bumper.bump_ver_empty?()
+              bumper.line.sub!(/\d+\s*\-\s*\d+\s*\-\s*\d+(.*)\z/m,"#{Date.today().strftime('%F')}\\1")
+              bumper.add_change(bumper.line,push: true)
+              bumper.line << "\n"
+              
+              bumper.line = orig_line
+            end
+          else
+            bumper.line = orig_line
+          end
+        end
+      end
+      
+      return bumper.version
     end
     
     def bump_ruby_files(bump_ver)
