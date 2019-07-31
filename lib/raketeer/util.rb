@@ -27,6 +27,9 @@ module Raketeer
   # @since  0.2.2
   ###
   module Util
+    # @since 0.2.4
+    TRUE_BOOLS = ['1','on','t','true','y','yes'].freeze()
+    
     def self.find_main_executable(bin_dir)
       # Try any file
       main_exe = Dir.glob(File.join(bin_dir,'*'))
@@ -62,6 +65,11 @@ module Raketeer
       return File.basename(main_file[0],'.*') if main_file.length == 1
       
       return nil
+    end
+    
+    # @since 0.2.4
+    def self.to_bool(obj)
+      return TRUE_BOOLS.include?(obj.to_s().downcase())
     end
   end
 end
