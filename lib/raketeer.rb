@@ -21,9 +21,13 @@
 #++
 
 
+require 'raketeer/bump_task'
+require 'raketeer/bump_ver'
 require 'raketeer/irb_task'
 require 'raketeer/nokogiri_install_tasks'
 require 'raketeer/run_task'
+require 'raketeer/sem_ver'
+require 'raketeer/util'
 require 'raketeer/version'
 
 ###
