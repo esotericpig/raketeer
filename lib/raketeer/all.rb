@@ -21,6 +21,7 @@
 #++
 
 
+require 'raketeer/bump' # @since 0.2.4
 require 'raketeer/irb' # @since 0.2.0
 require 'raketeer/nokogiri_installs' # @since 0.1.0
 require 'raketeer/run' # @since 0.2.2
