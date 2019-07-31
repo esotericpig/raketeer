@@ -54,7 +54,7 @@ module Raketeer
       return obj.nil?() ? nil : obj.to_s().strip()
     end
     
-    def bump!(line,sem_ver)
+    def bump!(sem_ver)
       if !@version.nil?()
         sem_ver.version = @version
       else
@@ -105,7 +105,13 @@ module Raketeer
         end
       end
       
-      line.sub!(REGEX,sem_ver.to_s())
+      return sem_ver
+    end
+    
+    def bump_line!(line,sem_ver)
+      line.sub!(REGEX,bump!(sem_ver).to_s())
+      
+      return line
     end
     
     def build_meta=(build_meta)
