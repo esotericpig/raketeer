@@ -50,6 +50,17 @@ module Raketeer
       @version = nil
     end
     
+    def initialize_copy(orig)
+      super(orig)
+      
+      @build_meta = orig.build_meta.clone()
+      @major = orig.major.clone()
+      @minor = orig.minor.clone()
+      @patch = orig.patch.clone()
+      @prerelease = orig.prerelease.clone()
+      @version = orig.version.clone()
+    end
+    
     def self.parse(str)
       # Parsing backwards makes the logic easier
       build_meta = str.split('+',2)
