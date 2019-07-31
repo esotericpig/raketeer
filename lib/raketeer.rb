@@ -23,6 +23,7 @@
 
 require 'raketeer/bump_task'
 require 'raketeer/bump_ver'
+require 'raketeer/files_bumper'
 require 'raketeer/irb_task'
 require 'raketeer/nokogiri_install_tasks'
 require 'raketeer/run_task'
