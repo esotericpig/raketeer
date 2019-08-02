@@ -140,14 +140,5 @@ module Raketeer
     def version=(version)
       super(init_str(version))
     end
-    
-    def empty?()
-      return @build_meta.nil?() &&
-             @major.nil?() &&
-             @minor.nil?() &&
-             @patch.nil?() &&
-             @prerelease.nil?() &&
-             @version.nil?()
-    end
   end
 end
