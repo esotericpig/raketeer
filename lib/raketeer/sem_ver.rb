@@ -33,6 +33,7 @@ module Raketeer
   ###
   class SemVer
     REGEX = /\d+(\.\d+)?(\.\d+)?(\-[0-9A-Za-z\-\.]+)?(\+[0-9A-Za-z\-\.]+)?/
+    STRICT_REGEX = /\d+\.\d+\.\d+(\-[0-9A-Za-z\-\.]+)?(\+[0-9A-Za-z\-\.]+)?/
     
     attr_accessor :build_meta
     attr_accessor :major
@@ -95,8 +96,8 @@ module Raketeer
       return sem_ver
     end
     
-    def self.parse_line(line)
-      str = line[REGEX]
+    def self.parse_line(line,strict: false)
+      str = line[regex(strict)]
       
       return nil if str.nil?() || (str = str.strip()).empty?()
       return parse(str)
@@ -109,6 +110,10 @@ module Raketeer
              @patch.nil?() &&
              @prerelease.nil?() &&
              @version.nil?()
+    end
+    
+    def self.regex(strict=false)
+      return strict ? STRICT_REGEX : REGEX
     end
     
     def to_s()

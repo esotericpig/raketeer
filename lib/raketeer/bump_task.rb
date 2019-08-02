@@ -46,9 +46,11 @@ module Raketeer
     attr_accessor :name
     attr_accessor :ruby_files # Looks for {ruby_var}
     attr_accessor :ruby_var
+    attr_accessor :strict
     
     alias_method :bump_bundle?,:bump_bundle
     alias_method :dry_run?,:dry_run
+    alias_method :strict?,:strict
     
     def initialize(name=:bump)
       super()
@@ -62,6 +64,7 @@ module Raketeer
       @name = name
       @ruby_files = Rake::FileList[File.join('lib','**','version.rb')]
       @ruby_var = 'VERSION'
+      @strict = false
       
       yield self if block_given?()
       define()
@@ -168,9 +171,10 @@ module Raketeer
       bumper = FilesBumper.new(@bump_files,bump_ver,@dry_run)
       
       bumper.bump_files() do
-        next if bumper.changes > 0 || bumper.line !~ SemVer::REGEX
+        next if bumper.changes > 0 || !bumper.sem_ver.nil?()
+        next if bumper.line !~ SemVer.regex(@strict)
         
-        break if bumper.bump_line!() && bumper.bump_ver_empty?()
+        break if bumper.bump_line!(strict: @strict) != :no_ver && bumper.bump_ver_empty?()
       end
       
       return bumper.version
@@ -197,7 +201,7 @@ module Raketeer
         @unreleased_bumped = false
       end
       
-      header_regex = /\A(\s*##\s*\[+\D*)(#{SemVer::REGEX.to_s()})(.*)\z/m
+      header_regex = /\A(\s*##\s*\[+\D*)(#{SemVer.regex(@strict)})(.*)\z/m
       unreleased_regex = /\A.*Unreleased.*http.*\.{3}/
       
       bumper.bump_files() do
@@ -213,7 +217,7 @@ module Raketeer
           next if @unreleased_bumped
           
           # Match from the end, in case the URL has a number (like '%20')
-          match = bumper.line.match(/(#{SemVer::REGEX.to_s()})(\.{3}.*)\z/m)
+          match = bumper.line.match(/(#{SemVer.regex(@strict)})(\.{3}.*)\z/m)
           
           next if match.nil?() || match.length < 3 || (i = match.begin(0)) < 1
           
@@ -224,12 +228,14 @@ module Raketeer
           orig_line = bumper.line.dup()
           bumper.line = match[1]
           
-          if bumper.bump_line!(add_change: false)
+          if (result = bumper.bump_line!(add_change: false,strict: @strict)) != :no_ver
+            @unreleased_bumped = true
+            
+            next if result == :same_ver
+            
             bumper.line = match[0] << bumper.line << match[2]
             
             bumper.add_change(bumper.line,push: false)
-            
-            @unreleased_bumped = true
           else
             bumper.line = orig_line
           end
@@ -243,7 +249,11 @@ module Raketeer
           orig_line = bumper.line.dup()
           bumper.line = match[1]
           
-          if bumper.bump_line!(add_change: false)
+          if (result = bumper.bump_line!(add_change: false,strict: @strict)) != :no_ver
+            @header_bumped = true
+            
+            next if result == :same_ver
+            
             bumper.line = match[0] << bumper.line
             
             # Replace the date with today's date for the new Markdown header, if it exists
@@ -252,8 +262,6 @@ module Raketeer
             
             bumper.add_change(bumper.line,push: true)
             bumper.line << "\n" # Don't print this newline to the console
-            
-            @header_bumped = true
           end
           
           # We are adding a new Markdown header, so always set the line back to its original value
@@ -266,10 +274,10 @@ module Raketeer
     
     def bump_ruby_files(bump_ver)
       bumper = FilesBumper.new(@ruby_files,bump_ver,@dry_run)
-      version_var_regex = /\A(\s*#{Regexp.quote(@ruby_var)}\s*=\D*)(#{SemVer::REGEX.to_s()})(.*)\z/m
+      version_var_regex = /\A(\s*#{Regexp.quote(@ruby_var)}\s*=\D*)(#{SemVer.regex(@strict)})(.*)\z/m
       
       bumper.bump_files() do
-        next if bumper.changes > 0
+        next if bumper.changes > 0 || !bumper.sem_ver.nil?()
         next if (match = bumper.line.match(version_var_regex)).nil?()
         next if match.length < 4
         next if match[1..2].any?() {|m| m.nil?() || m.strip().empty?()}
@@ -277,13 +285,16 @@ module Raketeer
         orig_line = bumper.line.dup()
         bumper.line = match[2]
         
-        if bumper.bump_line!(add_change: false)
+        if (result = bumper.bump_line!(add_change: false,strict: @strict)) != :no_ver
+          if result == :same_ver
+            break if bumper.bump_ver_empty?()
+            next
+          end
+          
           bumper.line = match[1] << bumper.line
           bumper.line << match[-1] unless match[-1].nil?()
           
           bumper.add_change(bumper.line,push: false)
-          
-          break if bumper.bump_ver_empty?()
         else
           bumper.line = orig_line
         end

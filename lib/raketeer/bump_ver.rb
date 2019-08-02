@@ -111,8 +111,8 @@ module Raketeer
       return sem_ver
     end
     
-    def bump_line!(line,sem_ver)
-      line.sub!(REGEX,bump!(sem_ver).to_s())
+    def bump_line!(line,sem_ver,strict: false)
+      line.sub!(self.class.regex(strict),bump!(sem_ver).to_s())
       
       return line
     end

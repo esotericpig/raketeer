@@ -108,22 +108,25 @@ module Raketeer
       end
     end
     
-    def bump_line!(add_change: true)
-      @sem_ver = SemVer.parse_line(@line)
+    # @return [:no_ver,:same_ver,:bumped_ver]
+    def bump_line!(add_change: true,strict: false)
+      @sem_ver = SemVer.parse_line(@line,strict: strict)
       
-      return false if @sem_ver.nil?()
+      return :no_ver if @sem_ver.nil?()
       
       @version = @sem_ver if @version.nil?()
       
       if bump_ver_empty?()
         puts "= #{@sem_ver}"
         
-        return true
+        return :same_ver
       else
         orig_line = @line.dup()
-        @bump_ver.bump_line!(@line,@sem_ver)
+        orig_sem_ver = @sem_ver.dup()
         
-        if @line != orig_line
+        @bump_ver.bump_line!(@line,@sem_ver,strict: strict)
+        
+        if @sem_ver.to_s() != orig_sem_ver.to_s()
           if !@version_bumped
             @version = @sem_ver
             @version_bumped = true
@@ -131,11 +134,15 @@ module Raketeer
           
           self.add_change(@line,push: false) if add_change
           
-          return true
+          return :bumped_ver
+        else
+          @line = orig_line
+          
+          return :same_ver
         end
       end
       
-      return false
+      return :no_ver
     end
   end
 end
