@@ -168,6 +168,8 @@ module Raketeer
     end
     
     def bump_bump_files(bump_ver)
+      return nil if @bump_files.empty?()
+      
       bumper = FilesBumper.new(@bump_files,bump_ver,@dry_run,@strict)
       
       bumper.bump_files() do
@@ -196,6 +198,8 @@ module Raketeer
     
     # @see https://keepachangelog.com/en/1.0.0/
     def bump_changelogs(bump_ver)
+      return nil if @changelogs.empty?()
+      
       bumper = FilesBumper.new(@changelogs,bump_ver,@dry_run,@strict) do
         @header_bumped = false
         @unreleased_bumped = false
@@ -278,6 +282,8 @@ module Raketeer
     end
     
     def bump_ruby_files(bump_ver)
+      return nil if @ruby_files.empty?()
+      
       bumper = FilesBumper.new(@ruby_files,bump_ver,@dry_run,@strict)
       version_var_regex = /\A(\s*#{Regexp.quote(@ruby_var)}\s*=\D*)(#{SemVer.regex(@strict)})(.*)\z/m
       
