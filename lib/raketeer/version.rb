@@ -24,10 +24,12 @@
 module Raketeer
   VERSION = '0.2.3'
   
+  # @since 0.2.4
   DEP_VERSIONS = {
     'irb' => '~> 1.0'
   }
   
+  # @since 0.2.4
   def self.try_require_dev(gem_name)
     begin
       require gem_name
