@@ -2,21 +2,35 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.3...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.4...master)
+
+## [v0.2.4] - 2019-08-02
+### Added
+- BumpTask & 'raketeer/bump'
+- FilesBumper (lib/raketeer/files_bumper.rb)
+- SemVer (lib/raketeer/sem_ver.rb)
+- BumpVer (lib/raketeer/bump_ver.rb)
+- To Util:
+    - to_bool() & TRUE_BOOLS (from my yard_ghurt project)
+- To version.rb:
+    - DEP_VERSIONS & try_require_dev() (for future use)
+
+### Changed
+- Util.find_main_executable() to not search for 'bin/*.rb' since almost no project uses an extension in the bin directory
 
 ## [v0.2.3] - 2019-07-30
 ### Fixed
 - Fixed 'yield' typo in some tasks
 
 ## [v0.2.2] - 2019-07-29
-### Changed
-- Refactored some code (minor)
-- Changed some documentation (minor)
-
 ### Added
 - RunTask & 'raketeer/run'
 - Util
 - bin/raketeer (for testing purposes only, not included in the Gem package)
+
+### Changed
+- Refactored some code (minor)
+- Changed some documentation (minor)
 
 ## [v0.2.1] - 2019-07-24
 ### Changed
