@@ -168,13 +168,13 @@ module Raketeer
     end
     
     def bump_bump_files(bump_ver)
-      bumper = FilesBumper.new(@bump_files,bump_ver,@dry_run)
+      bumper = FilesBumper.new(@bump_files,bump_ver,@dry_run,@strict)
       
       bumper.bump_files() do
         next if bumper.changes > 0 || !bumper.sem_ver.nil?()
         next if bumper.line !~ SemVer.regex(@strict)
         
-        break if bumper.bump_line!(strict: @strict) != :no_ver && bumper.bump_ver_empty?()
+        break if bumper.bump_line!() != :no_ver && bumper.bump_ver_empty?()
       end
       
       return bumper.version
@@ -196,7 +196,7 @@ module Raketeer
     
     # @see https://keepachangelog.com/en/1.0.0/
     def bump_changelogs(bump_ver)
-      bumper = FilesBumper.new(@changelogs,bump_ver,@dry_run) do
+      bumper = FilesBumper.new(@changelogs,bump_ver,@dry_run,@strict) do
         @header_bumped = false
         @unreleased_bumped = false
       end
@@ -225,10 +225,14 @@ module Raketeer
           orig_line = bumper.line.dup()
           bumper.line = match[1]
           
-          if (result = bumper.bump_line!(add_change: false,strict: @strict)) != :no_ver
+          if (result = bumper.bump_line!(add_change: false)) != :no_ver
             @unreleased_bumped = true
             
-            next if result == :same_ver
+            if result == :same_ver
+              bumper.line = orig_line
+              
+              next
+            end
             
             bumper.line = match[0] << bumper.line << match[2]
             
@@ -246,10 +250,14 @@ module Raketeer
           orig_line = bumper.line.dup()
           bumper.line = match[1]
           
-          if (result = bumper.bump_line!(add_change: false,strict: @strict)) != :no_ver
+          if (result = bumper.bump_line!(add_change: false)) != :no_ver
             @header_bumped = true
             
-            next if result == :same_ver
+            if result == :same_ver
+              bumper.line = orig_line
+              
+              next
+            end
             
             bumper.line = match[0] << bumper.line
             
@@ -270,7 +278,7 @@ module Raketeer
     end
     
     def bump_ruby_files(bump_ver)
-      bumper = FilesBumper.new(@ruby_files,bump_ver,@dry_run)
+      bumper = FilesBumper.new(@ruby_files,bump_ver,@dry_run,@strict)
       version_var_regex = /\A(\s*#{Regexp.quote(@ruby_var)}\s*=\D*)(#{SemVer.regex(@strict)})(.*)\z/m
       
       bumper.bump_files() do
@@ -282,8 +290,10 @@ module Raketeer
         orig_line = bumper.line.dup()
         bumper.line = match[2]
         
-        if (result = bumper.bump_line!(add_change: false,strict: @strict)) != :no_ver
+        if (result = bumper.bump_line!(add_change: false)) != :no_ver
           if result == :same_ver
+            bumper.line = orig_line
+            
             break if bumper.bump_ver_empty?()
             next
           end

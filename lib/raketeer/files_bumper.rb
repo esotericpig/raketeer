@@ -39,20 +39,23 @@ module Raketeer
     attr_accessor :line
     attr_accessor :lines
     attr_accessor :sem_ver
+    attr_accessor :strict
     attr_accessor :version
     attr_accessor :version_bumped # Was the version actually bumped?
     
     alias_method :bump_ver_empty?,:bump_ver_empty
     alias_method :dry_run?,:dry_run
+    alias_method :strict?,:strict
     alias_method :version_bumped?,:version_bumped
     
-    def initialize(files,bump_ver,dry_run,&init_per_file)
+    def initialize(files,bump_ver,dry_run,strict,&init_per_file)
       @bump_ver = bump_ver
       @bump_ver_empty = bump_ver.empty?()
       @dry_run = dry_run
       @files = files.to_a()
       @init_per_file = init_per_file
       @sem_ver = nil
+      @strict = strict
       @version = nil
       @version_bumped = false
     end
@@ -109,8 +112,8 @@ module Raketeer
     end
     
     # @return [:no_ver,:same_ver,:bumped_ver]
-    def bump_line!(add_change: true,strict: false)
-      @sem_ver = SemVer.parse_line(@line,strict: strict)
+    def bump_line!(add_change: true)
+      @sem_ver = SemVer.parse_line(@line,strict: @strict)
       
       return :no_ver if @sem_ver.nil?()
       
@@ -124,7 +127,7 @@ module Raketeer
         orig_line = @line.dup()
         orig_sem_ver = @sem_ver.dup()
         
-        @bump_ver.bump_line!(@line,@sem_ver,strict: strict)
+        @bump_ver.bump_line!(@line,@sem_ver,strict: @strict)
         
         if @sem_ver.to_s() != orig_sem_ver.to_s()
           if !@version_bumped
