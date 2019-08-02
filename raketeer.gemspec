@@ -33,7 +33,7 @@ Gem::Specification.new() do |spec|
   spec.licenses    = ['LGPL-3.0-or-later']
   spec.homepage    = 'https://github.com/esotericpig/raketeer'
   spec.summary     = 'Extra Ruby Rake Tasks.'
-  spec.description = 'Extra Ruby Rake Tasks for IRB, Nokogiri, running, etc.'
+  spec.description = 'Extra Ruby Rake Tasks for IRB, Nokogiri, running, bumping the version, etc.'
   
   spec.metadata = {
     'bug_tracker_uri' => 'https://github.com/esotericpig/raketeer/issues',
