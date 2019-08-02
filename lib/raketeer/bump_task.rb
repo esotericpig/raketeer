@@ -158,7 +158,7 @@ module Raketeer
       
       # Always output it, in case the user just wants to see what the git message
       # should be without making changes.
-      if !sem_ver.empty?()
+      if !@git_msg.nil?() && !sem_ver.empty?()
         puts '[Git]:'
         puts '= ' + (@git_msg % {version: sem_ver[0].to_s()})
       end
@@ -170,7 +170,7 @@ module Raketeer
       bumper.bump_files() do
         next if bumper.changes > 0 || bumper.line !~ SemVer::REGEX
         
-        break if bumper.bump_line(bumper.line) && bumper.bump_ver_empty?()
+        break if bumper.bump_line!() && bumper.bump_ver_empty?()
       end
       
       return bumper.version
@@ -196,8 +196,9 @@ module Raketeer
         @header_bumped = false
         @unreleased_bumped = false
       end
-      header_regex = /\A\s*##\s*\[[^\]]+\]/
-      unreleased_regex = /\A.*Unreleased.*http/
+      
+      header_regex = /\A(\s*##\s*\[+\D*)(#{SemVer::REGEX.to_s()})(.*)\z/m
+      unreleased_regex = /\A.*Unreleased.*http.*\.{3}/
       
       bumper.bump_files() do
         if @header_bumped && @unreleased_bumped
@@ -211,39 +212,52 @@ module Raketeer
         if bumper.line =~ unreleased_regex
           next if @unreleased_bumped
           
-          unreleased = bumper.line.split(unreleased_regex,2)
+          # Match from the end, in case the URL has a number (like '%20')
+          match = bumper.line.match(/(#{SemVer::REGEX.to_s()})(\.{3}.*)\z/m)
           
-          next if unreleased.length != 2
-          next if (unreleased = unreleased[1].strip()).empty?()
+          next if match.nil?() || match.length < 3 || (i = match.begin(0)) < 1
           
-          unreleased = unreleased.split('...',2)[0].strip()
+          match = [bumper.line[0..i - 1],match[1],match[-1]]
           
-          next if unreleased.empty?()
-          
-          @unreleased_bumped = true if bumper.bump_line(unreleased)
-        elsif bumper.line =~ header_regex
-          next if @header_bumped
-          
-          header = bumper.line.split(/[\[\]]+/,3)
-          
-          next if header.length < 2
-          next if (header = header[1].strip()).empty?()
+          next if match.any?() {|m| m.nil?() || m.strip().empty?()}
           
           orig_line = bumper.line.dup()
+          bumper.line = match[1]
           
-          if bumper.bump_line(header,add_change: false)
-            @header_bumped = true
+          if bumper.bump_line!(add_change: false)
+            bumper.line = match[0] << bumper.line << match[2]
             
-            if !bumper.bump_ver_empty?()
-              bumper.line.sub!(/\d+\s*\-\s*\d+\s*\-\s*\d+(.*)\z/m,"#{Date.today().strftime('%F')}\\1")
-              bumper.add_change(bumper.line,push: true)
-              bumper.line << "\n"
-              
-              bumper.line = orig_line
-            end
+            bumper.add_change(bumper.line,push: false)
+            
+            @unreleased_bumped = true
           else
             bumper.line = orig_line
           end
+        elsif !(match = bumper.line.match(header_regex)).nil?()
+          next if @header_bumped || match.length < 4
+          
+          match = [match[1],match[2],match[-1]]
+          
+          next if match.any?() {|m| m.nil?() || m.strip().empty?()}
+          
+          orig_line = bumper.line.dup()
+          bumper.line = match[1]
+          
+          if bumper.bump_line!(add_change: false)
+            bumper.line = match[0] << bumper.line
+            
+            # Replace the date with today's date for the new header, if it exists
+            match[2].sub!(/\d+\s*\-\s*\d+\s*\-\s*\d+(.*)\z/m,"#{Date.today().strftime('%F')}\\1")
+            bumper.line << match[2]
+            
+            bumper.add_change(bumper.line,push: true)
+            bumper.line << "\n" # Don't print this newline to the console
+            
+            @header_bumped = true
+          end
+          
+          # We are adding a new header, so always set the line back to its original value
+          bumper.line = orig_line
         end
       end
       
@@ -252,17 +266,27 @@ module Raketeer
     
     def bump_ruby_files(bump_ver)
       bumper = FilesBumper.new(@ruby_files,bump_ver,@dry_run)
-      var_regex = /\A\s*#{Regexp.quote(@ruby_var)}\s*=\D*/
+      version_var_regex = /\A(\s*#{Regexp.quote(@ruby_var)}\s*=\D*)(#{SemVer::REGEX.to_s()})(.*)\z/m
       
       bumper.bump_files() do
-        next if bumper.changes > 0 || bumper.line !~ var_regex
+        next if bumper.changes > 0
+        next if (match = bumper.line.match(version_var_regex)).nil?()
+        next if match.length < 4
+        next if match[1..2].any?() {|m| m.nil?() || m.strip().empty?()}
         
-        ver_line = bumper.line.split(var_regex,2)
+        orig_line = bumper.line.dup()
+        bumper.line = match[2]
         
-        next if ver_line.length != 2
-        next if (ver_line = ver_line[1].strip()).empty?()
-        
-        break if bumper.bump_line(ver_line) && bumper.bump_ver_empty?()
+        if bumper.bump_line!(add_change: false)
+          bumper.line = match[1] << bumper.line
+          bumper.line << match[-1] unless match[-1].nil?()
+          
+          bumper.add_change(bumper.line,push: false)
+          
+          break if bumper.bump_ver_empty?()
+        else
+          bumper.line = orig_line
+        end
       end
       
       return bumper.version
@@ -302,6 +326,7 @@ rake #{@name}:pre            # Erase the pre-release version
 rake #{@name}:pre[alpha.4]   # Set the pre-release version
 rake #{@name}:build          # Erase the build metadata
 rake #{@name}:build[beta.5]  # Set the build metadata
+rake #{@name}:bundle         # Bump the Gemfile.lock version
       EOH
     end
   end
