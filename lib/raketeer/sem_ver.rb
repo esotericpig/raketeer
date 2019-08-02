@@ -53,12 +53,14 @@ module Raketeer
     def initialize_copy(orig)
       super(orig)
       
-      @build_meta = orig.build_meta.clone()
-      @major = orig.major.clone()
-      @minor = orig.minor.clone()
-      @patch = orig.patch.clone()
-      @prerelease = orig.prerelease.clone()
-      @version = orig.version.clone()
+      is_clone = caller[0].include?('clone')
+      
+      @build_meta = is_clone ? orig.build_meta.clone() : orig.build_meta.dup()
+      @major = is_clone ? orig.major.clone() : orig.major.dup()
+      @minor = is_clone ? orig.minor.clone() : orig.minor.dup()
+      @patch = is_clone ? orig.patch.clone() : orig.patch.dup()
+      @prerelease = is_clone ? orig.prerelease.clone() : orig.prerelease.dup()
+      @version = is_clone ? orig.version.clone() : orig.version.dup()
     end
     
     def self.parse(str)
@@ -100,12 +102,21 @@ module Raketeer
       return parse(str)
     end
     
+    def empty?()
+      return @build_meta.nil?() &&
+             @major.nil?() &&
+             @minor.nil?() &&
+             @patch.nil?() &&
+             @prerelease.nil?() &&
+             @version.nil?()
+    end
+    
     def to_s()
       s = ''.dup()
       
       if !@version.nil?()
         s << @version.to_s()
-      else
+      elsif !@major.nil?()
         s << @major.to_s()
         s << ".#{@minor.to_s()}" unless @minor.nil?()
         s << ".#{@patch.to_s()}" unless @patch.nil?()
