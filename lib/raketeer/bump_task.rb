@@ -40,14 +40,14 @@ module Raketeer
     attr_accessor :bump_bundle
     attr_accessor :bump_files # Looks for a version number
     attr_accessor :bundle_cmd
-    attr_accessor :changelogs # Looks for 'Unreleased' & a header
-    attr_accessor :description
+    attr_accessor :changelogs # Looks for 'Unreleased' & a Markdown header
     attr_accessor :dry_run
     attr_accessor :git_msg
     attr_accessor :name
     attr_accessor :ruby_files # Looks for {ruby_var}
     attr_accessor :ruby_var
     
+    alias_method :bump_bundle?,:bump_bundle
     alias_method :dry_run?,:dry_run
     
     def initialize(name=:bump)
@@ -129,7 +129,7 @@ module Raketeer
           bump_all(bump_ver)
         end
         
-        desc 'Bump the bundle version'
+        desc 'Bump the Gemfile.lock version'
         task :bundle do
           check_env()
           bump_bundle_file()
@@ -143,24 +143,24 @@ module Raketeer
     end
     
     def bump_all(bump_ver)
-      sem_ver = []
+      sem_vers = []
       
       # Order matters for outputting the most accurate version
-      sem_ver << bump_ruby_files(bump_ver)
-      sem_ver << bump_bump_files(bump_ver)
-      sem_ver << bump_changelogs(bump_ver)
+      sem_vers << bump_ruby_files(bump_ver)
+      sem_vers << bump_bump_files(bump_ver)
+      sem_vers << bump_changelogs(bump_ver)
       
-      sem_ver.compact!()
+      sem_vers.compact!()
       
-      if @bump_bundle && !bump_ver.empty?() && !sem_ver.empty?()
+      if @bump_bundle && !bump_ver.empty?() && !sem_vers.empty?()
         bump_bundle_file()
       end
       
       # Always output it, in case the user just wants to see what the git message
       # should be without making changes.
-      if !@git_msg.nil?() && !sem_ver.empty?()
+      if !@git_msg.nil?() && !sem_vers.empty?()
         puts '[Git]:'
-        puts '= ' + (@git_msg % {version: sem_ver[0].to_s()})
+        puts '= ' + (@git_msg % {version: sem_vers[0].to_s()})
       end
     end
     
@@ -190,7 +190,7 @@ module Raketeer
       sh(*sh_cmd,{:verbose => false})
     end
     
-    # https://keepachangelog.com/en/1.0.0/
+    # @see https://keepachangelog.com/en/1.0.0/
     def bump_changelogs(bump_ver)
       bumper = FilesBumper.new(@changelogs,bump_ver,@dry_run) do
         @header_bumped = false
@@ -246,7 +246,7 @@ module Raketeer
           if bumper.bump_line!(add_change: false)
             bumper.line = match[0] << bumper.line
             
-            # Replace the date with today's date for the new header, if it exists
+            # Replace the date with today's date for the new Markdown header, if it exists
             match[2].sub!(/\d+\s*\-\s*\d+\s*\-\s*\d+(.*)\z/m,"#{Date.today().strftime('%F')}\\1")
             bumper.line << match[2]
             
@@ -256,7 +256,7 @@ module Raketeer
             @header_bumped = true
           end
           
-          # We are adding a new header, so always set the line back to its original value
+          # We are adding a new Markdown header, so always set the line back to its original value
           bumper.line = orig_line
         end
       end
