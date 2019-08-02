@@ -21,6 +21,7 @@
 #++
 
 
+require 'raketeer/bump_ver'
 require 'raketeer/sem_ver'
 
 module Raketeer
