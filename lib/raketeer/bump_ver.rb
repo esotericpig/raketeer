@@ -64,6 +64,7 @@ module Raketeer
           elsif @major.empty?()
             sem_ver.major = 0 # There must always be a major version
           else
+            sem_ver.major = 0 if sem_ver.major.nil?()
             sem_ver.major += @major.to_i()
           end
         end
@@ -74,6 +75,7 @@ module Raketeer
           elsif @minor.empty?()
             sem_ver.minor = nil
           else
+            sem_ver.minor = 0 if sem_ver.minor.nil?()
             sem_ver.minor += @minor.to_i()
           end
         end
@@ -84,6 +86,7 @@ module Raketeer
           elsif @patch.empty?()
             sem_ver.patch = nil
           else
+            sem_ver.patch = 0 if sem_ver.patch.nil?()
             sem_ver.patch += @patch.to_i()
           end
         end
