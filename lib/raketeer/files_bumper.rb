@@ -82,9 +82,7 @@ module Raketeer
         File.foreach(filename) do |line|
           @line = line
           
-          if !@line.strip().empty?()
-            block.call(self)
-          end
+          block.call(self) if !@line.strip().empty?()
           
           @lines << @line
         end
@@ -109,8 +107,8 @@ module Raketeer
       end
     end
     
-    def bump_line(ver_line,add_change: true)
-      @sem_ver = SemVer.parse_line(ver_line)
+    def bump_line!(add_change: true)
+      @sem_ver = SemVer.parse_line(@line)
       
       return false if @sem_ver.nil?()
       
