@@ -2,7 +2,14 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.4...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.5...master)
+
+## [v0.2.5] - 2019-08-02
+### Added
+- Added a strict mode (regex) to BumpTask, BumpVer, FilesBumper, & SemVer
+
+### Fixed
+- Fixed the 'Nothing written (up-to-date)' feature in BumpTask (minor)
 
 ## [v0.2.4] - 2019-08-02
 ### Added
