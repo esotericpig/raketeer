@@ -1,7 +1,7 @@
 # TODO | Raketeer
 
 ## [v0.3.0]
-- [ ] A task to bump/change the version?
+- [x] A task to bump/change the version?
     - Files:
         - lib/projectname/version.rb
         - CHANGELOG.md
