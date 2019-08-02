@@ -206,11 +206,8 @@ module Raketeer
       
       bumper.bump_files() do
         if @header_bumped && @unreleased_bumped
-          if bumper.bump_ver_empty?()
-            break
-          else
-            next
-          end
+          break if bumper.bump_ver_empty?()
+          next
         end
         
         if bumper.line =~ unreleased_regex
