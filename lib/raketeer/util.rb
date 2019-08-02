@@ -31,13 +31,8 @@ module Raketeer
     TRUE_BOOLS = ['1','on','t','true','y','yes'].freeze()
     
     def self.find_main_executable(bin_dir)
-      # Try any file
+      # Try the bin/ dir
       main_exe = Dir.glob(File.join(bin_dir,'*'))
-      
-      return File.basename(main_exe[0]) if main_exe.length == 1
-      
-      # Try only .rb files
-      main_exe = Dir.glob(File.join(bin_dir,'*.rb'))
       
       return File.basename(main_exe[0]) if main_exe.length == 1
       
