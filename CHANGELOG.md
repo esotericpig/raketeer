@@ -2,7 +2,14 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.5...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.6...master)
+
+## [v0.2.6] - 2019-08-03
+### Changed
+- Refactored BumpTask for a new project I'm working on to use this project in a CLI
+
+### Fixed
+- SemVer's initialize_copy()
 
 ## [v0.2.5] - 2019-08-02
 ### Added
