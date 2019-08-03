@@ -150,13 +150,19 @@ module Raketeer
       
       sem_vers.compact!()
       
-      if @bump_bundle && !bump_ver.empty?() && !sem_vers.empty?()
+      if sem_vers.empty?()
+        puts '! No versions found'
+        
+        return
+      end
+      
+      if @bump_bundle && !bump_ver.empty?()
         bump_bundle_file()
       end
       
       # Always output it, in case the user just wants to see what the git message
       # should be without making changes.
-      if !@git_msg.nil?() && !sem_vers.empty?()
+      if !@git_msg.nil?()
         puts '[Git]:'
         puts '= ' + (@git_msg % {version: sem_vers[0].to_s()})
       end
@@ -333,13 +339,13 @@ rake #{@name} major=+1 minor=+1 patch=+1  # Bump the version numbers by 1
 rake #{@name} major=+2 minor=+3 patch=+4  # Bump the version numbers by X
 
 rake #{@name}:major          # Bump the major version by 1
-rake #{@name}:major[1]       # Set the major version
+rake #{@name}:major[1]       # Set the major version to 1
 rake #{@name}:major[+2]      # Bump the major version by 2
 rake #{@name}:minor          # Bump the minor version by 1
-rake #{@name}:minor[2]       # Set the minor version
+rake #{@name}:minor[2]       # Set the minor version to 2
 rake #{@name}:minor[+3]      # Bump the minor version by 3
 rake #{@name}:patch          # Bump the patch version by 1
-rake #{@name}:patch[3]       # Set the patch version
+rake #{@name}:patch[3]       # Set the patch version to 3
 rake #{@name}:patch[+4]      # Bump the patch version by 4
 rake #{@name}:pre            # Erase the pre-release version
 rake #{@name}:pre[alpha.4]   # Set the pre-release version
