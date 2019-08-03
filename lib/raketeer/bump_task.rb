@@ -73,7 +73,6 @@ module Raketeer
     def define()
       desc 'Show/Set/Bump the version'
       task @name,[:version] do |task,args|
-        check_env()
         bump_all(BumpVer.new(
           version: args.version,
           major: ENV['major'],
@@ -92,7 +91,6 @@ module Raketeer
           # You can't erase the major version (required)
           bump_ver.major = '+1' if bump_ver.major.nil?() || bump_ver.major.empty?()
           
-          check_env()
           bump_all(bump_ver)
         end
         
@@ -101,7 +99,6 @@ module Raketeer
           bump_ver = BumpVer.new(minor: args.minor)
           bump_ver.minor = '+1' if bump_ver.minor.nil?()
           
-          check_env()
           bump_all(bump_ver)
         end
         
@@ -110,7 +107,6 @@ module Raketeer
           bump_ver = BumpVer.new(patch: args.patch)
           bump_ver.patch = '+1' if bump_ver.patch.nil?()
           
-          check_env()
           bump_all(bump_ver)
         end
         
@@ -119,7 +115,6 @@ module Raketeer
           bump_ver = BumpVer.new(prerelease: args.pre)
           bump_ver.prerelease = '' if bump_ver.prerelease.nil?()
           
-          check_env()
           bump_all(bump_ver)
         end
         
@@ -128,13 +123,11 @@ module Raketeer
           bump_ver = BumpVer.new(build_meta: args.build)
           bump_ver.build_meta = '' if bump_ver.build_meta.nil?()
           
-          check_env()
           bump_all(bump_ver)
         end
         
         desc 'Bump the Gemfile.lock version'
         task :bundle do
-          check_env()
           bump_bundle_file()
         end
         
@@ -146,6 +139,8 @@ module Raketeer
     end
     
     def bump_all(bump_ver)
+      check_env()
+      
       sem_vers = []
       
       # Order matters for outputting the most accurate version
