@@ -125,11 +125,11 @@ module Raketeer
         return :same_ver
       else
         orig_line = @line.dup()
-        orig_sem_ver = @sem_ver.dup()
+        orig_sem_ver_s = @sem_ver.to_s()
         
         @bump_ver.bump_line!(@line,@sem_ver,strict: @strict)
         
-        if @sem_ver.to_s() != orig_sem_ver.to_s()
+        if @sem_ver.to_s() != orig_sem_ver_s
           if !@version_bumped
             @version = @sem_ver
             @version_bumped = true
