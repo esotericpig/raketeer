@@ -54,14 +54,14 @@ module Raketeer
     def initialize_copy(orig)
       super(orig)
       
-      is_clone = caller[0].include?('clone')
+      copy = caller[0].to_s().include?('clone') ? :clone : :dup
       
-      @build_meta = is_clone ? orig.build_meta.clone() : orig.build_meta.dup()
-      @major = is_clone ? orig.major.clone() : orig.major.dup()
-      @minor = is_clone ? orig.minor.clone() : orig.minor.dup()
-      @patch = is_clone ? orig.patch.clone() : orig.patch.dup()
-      @prerelease = is_clone ? orig.prerelease.clone() : orig.prerelease.dup()
-      @version = is_clone ? orig.version.clone() : orig.version.dup()
+      @build_meta = @build_meta.__send__(copy)
+      @major = @major.__send__(copy)
+      @minor = @minor.__send__(copy)
+      @patch = @patch.__send__(copy)
+      @prerelease = @prerelease.__send__(copy)
+      @version = @version.__send__(copy)
     end
     
     def self.parse(str)
