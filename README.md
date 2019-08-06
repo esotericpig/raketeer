@@ -49,6 +49,103 @@ $ bundle exec rake install:local
 
 ## [Using](#contents)
 
+**TODO:** flesh out Using section
+
+**Rakefile**
+
+In your *Rakefile*, you can either include all tasks...
+
+```Ruby
+require 'raketeer/all'
+```
+
+Or, include the specific tasks that you need:
+
+```Ruby
+require 'raketeer/bump'
+require 'raketeer/irb'
+require 'raketeer/nokogiri_installs'
+require 'raketeer/run'
+```
+
+If you have conflicting tasks and/or you want to see what tasks have been included, you can put them in a namespace:
+
+```Ruby
+namespace :rt do
+  require 'raketeer/all'
+end
+```
+
+**Included Tasks**
+
+```
+rake bump[version]      # Show/Set/Bump the version
+rake bump:build[build]  # Set/Erase the build metadata
+rake bump:bundle        # Bump the Gemfile.lock version
+rake bump:help          # Show the help/usage for bump tasks
+rake bump:major[major]  # Bump/Set the major version
+rake bump:minor[minor]  # Bump/Set the minor version
+rake bump:patch[patch]  # Bump/Set the patch version
+rake bump:pre[pre]      # Set/Erase the pre-release version
+rake irb                # Open an irb session loaded with this library
+rake nokogiri_apt       # Install Nokogiri libs for Ubuntu/Debian
+rake nokogiri_dnf       # Install Nokogiri libs for Fedora/CentOS/Red Hat
+rake nokogiri_other     # Install Nokogiri libs for other OSes
+rake run                # Run this project's main file: "rake run -- --version"
+```
+
+**bump:help**
+
+```
+$ rake bump:help
+rake bump  # Print the current version
+
+# You can run a dry run for any task (will not write to files)
+rake bump dryrun=true
+
+rake bump[1.2.3-alpha.4-beta.5]       # Set the version manually
+rake bump major=1 minor=2 patch=3     # Set the version numbers
+rake bump pre=alpha.4 build=beta.5    # Set the version extensions
+rake bump major=+1 minor=+1 patch=+1  # Bump the version numbers by 1
+rake bump major=+2 minor=+3 patch=+4  # Bump the version numbers by X
+
+rake bump:major          # Bump the major version by 1
+rake bump:major[1]       # Set the major version to 1
+rake bump:major[+2]      # Bump the major version by 2
+rake bump:minor          # Bump the minor version by 1
+rake bump:minor[2]       # Set the minor version to 2
+rake bump:minor[+3]      # Bump the minor version by 3
+rake bump:patch          # Bump the patch version by 1
+rake bump:patch[3]       # Set the patch version to 3
+rake bump:patch[+4]      # Bump the patch version by 4
+rake bump:pre            # Erase the pre-release version
+rake bump:pre[alpha.4]   # Set the pre-release version
+rake bump:build          # Erase the build metadata
+rake bump:build[beta.5]  # Set the build metadata
+rake bump:bundle         # Bump the Gemfile.lock version
+```
+
+**Modifying Tasks**
+
+If you need more control, for now, please look at the accessors of each task (better documentation is planned for v1.0.0):
+
+- [BumpTask](lib/raketeer/bump_task.rb)
+- [IRBTask](lib/raketeer/irb_task.rb)
+- [NokogiriAPTTask](lib/raketeer/nokogiri_install_tasks.rb)
+- [NokogiriDNFTask](lib/raketeer/nokogiri_install_tasks.rb)
+- [NokogiriOtherTask](lib/raketeer/nokogiri_install_tasks.rb)
+- [RunTask](lib/raketeer/run_task.rb)
+
+For example, in your *Rakefile*:
+
+```Ruby
+require 'raketeer/bump_task'
+
+Raketeer::BumpTask.new() do |task|
+  task.strict = true
+end
+```
+
 ## [Hacking](#contents)
 
 ```
