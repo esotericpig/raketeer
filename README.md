@@ -8,6 +8,8 @@
 
 Extra Ruby Rake Tasks.
 
+A [CLI app](https://github.com/esotericpig/raketary) is also available that uses these tasks, which is useful for tasks like *bump* (which bumps the version for your RubyGem project) so that you don't have to include this Gem as a development dependency for every project.
+
 ## Contents
 
 - [Setup](#setup)
