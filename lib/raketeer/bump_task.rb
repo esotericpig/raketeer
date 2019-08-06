@@ -128,6 +128,7 @@ module Raketeer
         
         desc 'Bump the Gemfile.lock version'
         task :bundle do
+          check_env()
           bump_bundle_file()
         end
         
