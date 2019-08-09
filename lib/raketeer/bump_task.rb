@@ -23,9 +23,7 @@
 
 require 'date'
 require 'rake'
-
 require 'rake/tasklib'
-
 require 'raketeer/bump_ver'
 require 'raketeer/files_bumper'
 require 'raketeer/sem_ver'
@@ -319,11 +317,8 @@ module Raketeer
     end
     
     def check_env()
-      env_dryrun = ENV['dryrun']
-      
-      if !env_dryrun.nil?() && !(env_dryrun = env_dryrun.to_s().strip()).empty?()
-        @dry_run = Util.to_bool(env_dryrun)
-      end
+      @dry_run = Util.get_env_bool('dryrun',@dry_run)
+      @strict = Util.get_env_bool('strict',@strict)
     end
     
     def print_help()
