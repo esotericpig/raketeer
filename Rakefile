@@ -34,3 +34,15 @@ CLOBBER.include('doc/')
 namespace :rt do
   require 'raketeer/all'
 end
+
+namespace :todo do
+  # TODO: make this into a task class
+  # TODO: do 'gem:files'? and also 'gem:info' for all other methods?
+  desc 'Output dat gemspec bootyliciousness'
+  task :gem do |task,args|
+    # TODO: if this doesn't work, read *.gemspec somehow? probably not...
+    gem = Gem::Specification.find_by_name('raketeer')
+    puts gem.files
+    #puts gem.methods.sort - Object.methods
+  end
+end
