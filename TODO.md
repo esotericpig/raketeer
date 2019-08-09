@@ -15,5 +15,5 @@
 - [ ] Add *check_env()* to IRBTask & RunTask for `warn=true`?
 - [ ] Task for `grep todo\: -ir ./` & `grep fixme\: -ir ./` so don't have to type it all of the time?
     - Don't use `sh 'grep',...`; use Ruby code (`Dir.glob...`)
-    - Default dir should probably be 'lib/'?
     - Default to ignore hidden dirs/files (e.g., '.git/')
+        - `files.exclude('.git/','*/**/TODO*')`
