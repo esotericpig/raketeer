@@ -30,7 +30,7 @@ module Raketeer
     # @since 0.2.4
     TRUE_BOOLS = ['1','on','t','true','y','yes'].freeze()
     
-    def self.find_main_executable(bin_dir)
+    def self.find_main_executable(bin_dir='bin')
       # Try the bin/ dir
       main_exe = Dir.glob(File.join(bin_dir,'*'))
       
@@ -48,9 +48,9 @@ module Raketeer
       return nil
     end
     
-    def self.find_main_module()
+    def self.find_main_module(lib_dir='lib')
       # Try the lib/ dir
-      main_file = Dir.glob(File.join('lib','*.rb'))
+      main_file = Dir.glob(File.join(lib_dir,'*.rb'))
       
       return File.basename(main_file[0],'.*') if main_file.length == 1
       
@@ -60,6 +60,17 @@ module Raketeer
       return File.basename(main_file[0],'.*') if main_file.length == 1
       
       return nil
+    end
+    
+    # @since 0.2.7
+    def self.get_env_bool(env_name,def_value=nil)
+      value = ENV[env_name]
+      
+      if value.nil?() || (value = value.to_s().strip()).empty?()
+        return def_value
+      end
+      
+      return to_bool(value)
     end
     
     # @since 0.2.4
