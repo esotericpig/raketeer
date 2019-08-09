@@ -1,6 +1,6 @@
 # TODO | Raketeer
 
-## [v0.3.0]
+## [v1.0.0]
 - [x] A task to bump/change the version?
     - Files:
         - lib/projectname/version.rb
@@ -11,3 +11,5 @@
     - ShFileTask or CompressTask as parent?
     - [ ] Add GzipTask using zlib?
     - [ ] Add RubyZipTask using rubyzip?
+- [ ] Task to output Gemspec files?
+- [ ] Add *check_env()* to IRBTask & RunTask for `warn=true`?
