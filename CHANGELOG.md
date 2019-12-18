@@ -2,7 +2,18 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.6...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.7...master)
+
+## [v0.2.7] - 2019-12-18
+### Added
+- Add more info to README
+- Add default dirs to Util methods
+- Add Util.get_env_bool() method
+- Add more TODOs and skeletons for future
+- Add strict as an env var to bump task
+
+### Fixed
+- Check env vars for bundle task in bump task
 
 ## [v0.2.6] - 2019-08-03
 ### Changed
