@@ -17,3 +17,4 @@
     - Don't use `sh 'grep',...`; use Ruby code (`Dir.glob...`)
     - Default to ignore hidden dirs/files (e.g., '.git/')
         - `files.exclude('.git/','*/**/TODO*')`
+- [ ] Task for changing GPL/LGPL license header text, changing LICENSE.txt, and for changing the project name in the license header text (for GPL/LGPL).
