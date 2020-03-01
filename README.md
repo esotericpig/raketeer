@@ -65,6 +65,7 @@ Or, include the specific tasks that you need:
 
 ```Ruby
 require 'raketeer/bump'
+require 'raketeer/github_pkg'
 require 'raketeer/irb'
 require 'raketeer/nokogiri_installs'
 require 'raketeer/run'
@@ -89,6 +90,7 @@ rake bump:major[major]  # Bump/Set the major version
 rake bump:minor[minor]  # Bump/Set the minor version
 rake bump:patch[patch]  # Bump/Set the patch version
 rake bump:pre[pre]      # Set/Erase the pre-release version
+rake github_pkg         # Publish this project's gem(s) to GitHub Packages
 rake irb                # Open an irb session loaded with this library
 rake nokogiri_apt       # Install Nokogiri libs for Ubuntu/Debian
 rake nokogiri_dnf       # Install Nokogiri libs for Fedora/CentOS/Red Hat
@@ -132,6 +134,7 @@ rake bump:bundle         # Bump the Gemfile.lock version
 If you need more control, for now, please look at the accessors of each task (better documentation is planned for v1.0.0):
 
 - [BumpTask](lib/raketeer/bump_task.rb)
+- [GitHubPkgTask](lib/raketeer/github_pkg_task.rb)
 - [IRBTask](lib/raketeer/irb_task.rb)
 - [NokogiriAPTTask](lib/raketeer/nokogiri_install_tasks.rb)
 - [NokogiriDNFTask](lib/raketeer/nokogiri_install_tasks.rb)
@@ -146,12 +149,18 @@ require 'raketeer/bump_task'
 Raketeer::BumpTask.new() do |task|
   task.strict = true
 end
+
+Raketeer::GitHubPkgTask.new() do |task|
+  task.deps << 'test'
+  task.username = 'esotericpig'
+end
 ```
 
 ## [Hacking](#contents)
 
 ```
 $ git clone 'https://github.com/esotericpig/raketeer.git'
+$ cd raketeer
 $ bundle install
 $ bundle exec rake -T
 ```
@@ -161,7 +170,7 @@ $ bundle exec rake -T
 [GNU LGPL v3+](LICENSE.txt)
 
 > Raketeer (<https://github.com/esotericpig/raketeer>)  
-> Copyright (c) 2019 Jonathan Bradley Whited (@esotericpig)  
+> Copyright (c) 2019-2020 Jonathan Bradley Whited (@esotericpig)  
 > 
 > Raketeer is free software: you can redistribute it and/or modify  
 > it under the terms of the GNU Lesser General Public License as published by  

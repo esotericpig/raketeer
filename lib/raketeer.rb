@@ -4,7 +4,7 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019 Jonathan Bradley Whited (@esotericpig)
+# Copyright (c) 2019-2020 Jonathan Bradley Whited (@esotericpig)
 # 
 # Raketeer is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -24,12 +24,14 @@
 require 'raketeer/bump_task'
 require 'raketeer/bump_ver'
 require 'raketeer/files_bumper'
+require 'raketeer/github_pkg_task'
 require 'raketeer/irb_task'
 require 'raketeer/nokogiri_install_tasks'
 require 'raketeer/run_task'
 require 'raketeer/sem_ver'
 require 'raketeer/util'
 require 'raketeer/version'
+
 
 ###
 # @author Jonathan Bradley Whited (@esotericpig)
