@@ -2,7 +2,11 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.8...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.9...master)
+
+## [v0.2.9] - 2020-03-01
+### Changed
+- Changed Gemspec description (mainly for testing other project Raketary)
 
 ## [v0.2.8] - 2020-03-01
 ### Added
