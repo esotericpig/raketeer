@@ -2,7 +2,13 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.7...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.8...master)
+
+## [v0.2.8] - 2020-03-01
+### Added
+- GitHubPkg (lib/raketeer/github_pkg.rb)
+- GitHubPkgTask (lib/raketeer/github_pkg_task.rb)
+    - Publish/Push your `pkg/*.gem` release(s) to GitHub Packages
 
 ## [v0.2.7] - 2019-12-18
 ### Added
