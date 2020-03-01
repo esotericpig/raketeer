@@ -150,6 +150,8 @@ Raketeer::BumpTask.new() do |task|
   task.strict = true
 end
 
+require 'raketeer/github_pkg_task'
+
 Raketeer::GitHubPkgTask.new() do |task|
   task.deps << 'test'
   task.username = 'esotericpig'
