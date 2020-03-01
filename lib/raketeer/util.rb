@@ -4,7 +4,7 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019 Jonathan Bradley Whited (@esotericpig)
+# Copyright (c) 2019-2020 Jonathan Bradley Whited (@esotericpig)
 # 
 # Raketeer is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -29,6 +29,23 @@ module Raketeer
   module Util
     # @since 0.2.4
     TRUE_BOOLS = ['1','on','t','true','y','yes'].freeze()
+    
+    # This is pretty hacky...
+    # 
+    # @since 0.2.8
+    def self.find_github_username()
+      Dir.glob('*.gemspec') do |file|
+        File.foreach(file) do |line|
+          md = line.match(%r{(github\.com/)([^/]+)}i)
+          
+          next if md.nil?() || md.length < 3
+          
+          return md[2].gsub(/\s+/,'')
+        end
+      end
+      
+      return nil
+    end
     
     def self.find_main_executable(bin_dir='bin')
       # Try the bin/ dir
