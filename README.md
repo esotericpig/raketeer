@@ -51,8 +51,6 @@ $ bundle exec rake install:local
 
 ## [Using](#contents)
 
-**TODO:** flesh out Using section
-
 **Rakefile**
 
 In your *Rakefile*, you can either include all tasks...
@@ -149,7 +147,9 @@ require 'raketeer/bump_task'
 Raketeer::BumpTask.new() do |task|
   task.strict = true
 end
+```
 
+```Ruby
 require 'raketeer/github_pkg_task'
 
 Raketeer::GitHubPkgTask.new() do |task|
