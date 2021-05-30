@@ -66,9 +66,9 @@ Gem::Specification.new() do |spec|
   
   dv = Raketeer::DEP_VERSIONS
   
-  spec.add_runtime_dependency 'rake' #,'~> 12.3'
+  spec.add_runtime_dependency 'rake'
   
-  spec.add_development_dependency 'bundler','~> 1.17'
+  spec.add_development_dependency 'bundler','~> 2.2'
   spec.add_development_dependency 'irb'    ,dv['irb'] # For IRBTask
   spec.add_development_dependency 'yard'   ,'~> 0.9'  # For documentation
 end

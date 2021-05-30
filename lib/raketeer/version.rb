@@ -26,7 +26,7 @@ module Raketeer
   
   # @since 0.2.4
   DEP_VERSIONS = {
-    'irb' => '~> 1.0'
+    'irb' => '>= 1.0'
   }
   
   # @since 0.2.4
