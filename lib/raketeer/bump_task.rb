@@ -1,23 +1,9 @@
-#!/usr/bin/env ruby
 # encoding: UTF-8
 # frozen_string_literal: true
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019 Jonathan Bradley Whited (@esotericpig)
-# 
-# Raketeer is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# Raketeer is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-# 
-# You should have received a copy of the GNU Lesser General Public License
-# along with Raketeer.  If not, see <https://www.gnu.org/licenses/>.
+# Copyright (c) 2019-2021 Jonathan Bradley Whited
 #++
 
 
@@ -31,7 +17,7 @@ require 'raketeer/util'
 
 module Raketeer
   ###
-  # @author Jonathan Bradley Whited (@esotericpig)
+  # @author Jonathan Bradley Whited
   # @since  0.2.4
   ###
   class BumpTask < Rake::TaskLib
@@ -45,30 +31,30 @@ module Raketeer
     attr_accessor :ruby_files # Looks for {ruby_var}
     attr_accessor :ruby_var
     attr_accessor :strict
-    
+
     alias_method :bump_bundle?,:bump_bundle
     alias_method :dry_run?,:dry_run
     alias_method :strict?,:strict
-    
+
     def initialize(name=:bump)
       super()
-      
+
       @bump_bundle = false
       @bump_files = Rake::FileList[]
       @bundle_cmd = 'bundle'
       @changelogs = Rake::FileList['CHANGELOG.md']
       @dry_run = false
-      @git_msg = %q(git commit -m 'Bump version to v%{version}')
+      @git_msg = "git commit -m 'Bump version to v%{version}'"
       @name = name
       @ruby_files = Rake::FileList[File.join('lib','**','version.rb')]
       @ruby_var = 'VERSION'
       @strict = false
-      
-      yield self if block_given?()
-      define()
+
+      yield self if block_given?
+      define
     end
-    
-    def define()
+
+    def define
       desc 'Show/Set/Bump the version'
       task @name,[:version] do |task,args|
         bump_all(BumpVer.new(
@@ -80,249 +66,249 @@ module Raketeer
           build_meta: ENV['build']
         ))
       end
-      
+
       namespace @name do
         desc 'Bump/Set the major version'
         task :major,[:major] do |task,args|
           bump_ver = BumpVer.new(major: args.major)
-          
+
           # You can't erase the major version (required)
-          bump_ver.major = '+1' if bump_ver.major.nil?() || bump_ver.major.empty?()
-          
+          bump_ver.major = '+1' if bump_ver.major.nil? || bump_ver.major.empty?
+
           bump_all(bump_ver)
         end
-        
+
         desc 'Bump/Set the minor version'
         task :minor,[:minor] do |task,args|
           bump_ver = BumpVer.new(minor: args.minor)
-          bump_ver.minor = '+1' if bump_ver.minor.nil?()
-          
+          bump_ver.minor = '+1' if bump_ver.minor.nil?
+
           bump_all(bump_ver)
         end
-        
+
         desc 'Bump/Set the patch version'
         task :patch,[:patch] do |task,args|
           bump_ver = BumpVer.new(patch: args.patch)
-          bump_ver.patch = '+1' if bump_ver.patch.nil?()
-          
+          bump_ver.patch = '+1' if bump_ver.patch.nil?
+
           bump_all(bump_ver)
         end
-        
+
         desc 'Set/Erase the pre-release version'
         task :pre,[:pre] do |task,args|
           bump_ver = BumpVer.new(prerelease: args.pre)
-          bump_ver.prerelease = '' if bump_ver.prerelease.nil?()
-          
+          bump_ver.prerelease = '' if bump_ver.prerelease.nil?
+
           bump_all(bump_ver)
         end
-        
+
         desc 'Set/Erase the build metadata'
         task :build,[:build] do |task,args|
           bump_ver = BumpVer.new(build_meta: args.build)
-          bump_ver.build_meta = '' if bump_ver.build_meta.nil?()
-          
+          bump_ver.build_meta = '' if bump_ver.build_meta.nil?
+
           bump_all(bump_ver)
         end
-        
+
         desc 'Bump the Gemfile.lock version'
         task :bundle do
-          check_env()
-          bump_bundle_file()
+          check_env
+          bump_bundle_file
         end
-        
+
         desc "Show the help/usage for #{name} tasks"
         task :help do
-          print_help()
+          print_help
         end
       end
     end
-    
+
     def bump_all(bump_ver)
-      check_env()
-      
+      check_env
+
       sem_vers = []
-      
+
       # Order matters for outputting the most accurate version
       sem_vers << bump_ruby_files(bump_ver)
       sem_vers << bump_bump_files(bump_ver)
       sem_vers << bump_changelogs(bump_ver)
-      
-      sem_vers.compact!()
-      
-      if sem_vers.empty?()
+
+      sem_vers.compact!
+
+      if sem_vers.empty?
         puts '! No versions found'
-        
+
         return
       end
-      
-      if @bump_bundle && !bump_ver.empty?()
-        bump_bundle_file()
+
+      if @bump_bundle && !bump_ver.empty?
+        bump_bundle_file
       end
-      
+
       # Always output it, in case the user just wants to see what the git message
       # should be without making changes.
-      if !@git_msg.nil?()
+      if !@git_msg.nil?
         puts '[Git]:'
-        puts '= ' + (@git_msg % {version: sem_vers[0].to_s()})
+        puts '= ' + (@git_msg % {version: sem_vers[0].to_s})
       end
     end
-    
+
     def bump_bump_files(bump_ver)
-      return nil if @bump_files.empty?()
-      
+      return nil if @bump_files.empty?
+
       bumper = FilesBumper.new(@bump_files,bump_ver,@dry_run,@strict)
-      
-      bumper.bump_files() do
-        next if bumper.changes > 0 || !bumper.sem_ver.nil?()
+
+      bumper.bump_files do
+        next if bumper.changes > 0 || !bumper.sem_ver.nil?
         next if bumper.line !~ SemVer.regex(@strict)
-        
-        break if bumper.bump_line!() != :no_ver && bumper.bump_ver_empty?()
+
+        break if bumper.bump_line! != :no_ver && bumper.bump_ver_empty?
       end
-      
+
       return bumper.version
     end
-    
-    def bump_bundle_file()
+
+    def bump_bundle_file
       sh_cmd = [@bundle_cmd,'list']
-      
+
       puts "[#{sh_cmd.join(' ')}]:"
-      
+
       if @dry_run
         puts '= Nothing written (dry run)'
-        
+
         return
       end
-      
-      sh(*sh_cmd,{:verbose => false})
+
+      sh(*sh_cmd,verbose: false)
     end
-    
+
     # @see https://keepachangelog.com/en/1.0.0/
     def bump_changelogs(bump_ver)
-      return nil if @changelogs.empty?()
-      
+      return nil if @changelogs.empty?
+
       bumper = FilesBumper.new(@changelogs,bump_ver,@dry_run,@strict) do
         @header_bumped = false
         @unreleased_bumped = false
       end
-      
+
       header_regex = /\A(\s*##\s*\[+\D*)(#{SemVer.regex(@strict)})(.*)\z/m
       unreleased_regex = /\A.*Unreleased.*http.*\.{3}/
-      
-      bumper.bump_files() do
+
+      bumper.bump_files do
         if @header_bumped && @unreleased_bumped
-          break if bumper.bump_ver_empty?()
+          break if bumper.bump_ver_empty?
           next
         end
-        
+
         if bumper.line =~ unreleased_regex
           next if @unreleased_bumped
-          
+
           # Match from the end, in case the URL has a number (like '%20')
           match = bumper.line.match(/(#{SemVer.regex(@strict)})(\.{3}.*)\z/m)
-          
-          next if match.nil?() || match.length < 3 || (i = match.begin(0)) < 1
-          
+
+          next if match.nil? || match.length < 3 || (i = match.begin(0)) < 1
+
           match = [bumper.line[0..i - 1],match[1],match[-1]]
-          
-          next if match.any?() {|m| m.nil?() || m.strip().empty?()}
-          
-          orig_line = bumper.line.dup()
+
+          next if match.any? {|m| m.nil? || m.strip.empty? }
+
+          orig_line = bumper.line.dup
           bumper.line = match[1]
-          
+
           if (result = bumper.bump_line!(add_change: false)) != :no_ver
             @unreleased_bumped = true
-            
+
             if result == :same_ver
               bumper.line = orig_line
-              
+
               next
             end
-            
+
             bumper.line = match[0] << bumper.line << match[2]
-            
+
             bumper.add_change(bumper.line,push: false)
           else
             bumper.line = orig_line
           end
-        elsif !(match = bumper.line.match(header_regex)).nil?()
+        elsif !(match = bumper.line.match(header_regex)).nil?
           next if @header_bumped || match.length < 4
-          
+
           match = [match[1],match[2],match[-1]]
-          
-          next if match.any?() {|m| m.nil?() || m.strip().empty?()}
-          
-          orig_line = bumper.line.dup()
+
+          next if match.any? {|m| m.nil? || m.strip.empty? }
+
+          orig_line = bumper.line.dup
           bumper.line = match[1]
-          
+
           if (result = bumper.bump_line!(add_change: false)) != :no_ver
             @header_bumped = true
-            
+
             if result == :same_ver
               bumper.line = orig_line
-              
+
               next
             end
-            
+
             bumper.line = match[0] << bumper.line
-            
+
             # Replace the date with today's date for the new Markdown header, if it exists
-            match[2].sub!(/\d+\s*\-\s*\d+\s*\-\s*\d+(.*)\z/m,"#{Date.today().strftime('%F')}\\1")
+            match[2].sub!(/\d+\s*\-\s*\d+\s*\-\s*\d+(.*)\z/m,"#{Date.today.strftime('%F')}\\1")
             bumper.line << match[2]
-            
+
             bumper.add_change(bumper.line,push: true)
             bumper.line << "\n" # Don't print this newline to the console
           end
-          
+
           # We are adding a new Markdown header, so always set the line back to its original value
           bumper.line = orig_line
         end
       end
-      
+
       return bumper.version
     end
-    
+
     def bump_ruby_files(bump_ver)
-      return nil if @ruby_files.empty?()
-      
+      return nil if @ruby_files.empty?
+
       bumper = FilesBumper.new(@ruby_files,bump_ver,@dry_run,@strict)
       version_var_regex = /\A(\s*#{Regexp.quote(@ruby_var)}\s*=\D*)(#{SemVer.regex(@strict)})(.*)\z/m
-      
-      bumper.bump_files() do
-        next if bumper.changes > 0 || !bumper.sem_ver.nil?()
-        next if (match = bumper.line.match(version_var_regex)).nil?()
+
+      bumper.bump_files do
+        next if bumper.changes > 0 || !bumper.sem_ver.nil?
+        next if (match = bumper.line.match(version_var_regex)).nil?
         next if match.length < 4
-        next if match[1..2].any?() {|m| m.nil?() || m.strip().empty?()}
-        
-        orig_line = bumper.line.dup()
+        next if match[1..2].any? {|m| m.nil? || m.strip.empty? }
+
+        orig_line = bumper.line.dup
         bumper.line = match[2]
-        
+
         if (result = bumper.bump_line!(add_change: false)) != :no_ver
           if result == :same_ver
             bumper.line = orig_line
-            
-            break if bumper.bump_ver_empty?()
+
+            break if bumper.bump_ver_empty?
             next
           end
-          
+
           bumper.line = match[1] << bumper.line
-          bumper.line << match[-1] unless match[-1].nil?()
-          
+          bumper.line << match[-1] unless match[-1].nil?
+
           bumper.add_change(bumper.line,push: false)
         else
           bumper.line = orig_line
         end
       end
-      
+
       return bumper.version
     end
-    
-    def check_env()
+
+    def check_env
       @dry_run = Util.get_env_bool('dryrun',@dry_run)
       @strict = Util.get_env_bool('strict',@strict)
     end
-    
-    def print_help()
-      puts <<-EOH
+
+    def print_help
+      puts <<-HELP
 rake #{@name}  # Print the current version
 
 # You can run a dry run for any task (will not write to files)
@@ -348,7 +334,7 @@ rake #{@name}:pre[alpha.4]   # Set the pre-release version
 rake #{@name}:build          # Erase the build metadata
 rake #{@name}:build[beta.5]  # Set the build metadata
 rake #{@name}:bundle         # Bump the Gemfile.lock version
-      EOH
+      HELP
     end
   end
 end

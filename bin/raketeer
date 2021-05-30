@@ -4,20 +4,7 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019 Jonathan Bradley Whited (@esotericpig)
-# 
-# Raketeer is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# Raketeer is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-# 
-# You should have received a copy of the GNU Lesser General Public License
-# along with Raketeer.  If not, see <https://www.gnu.org/licenses/>.
+# Copyright (c) 2019-2021 Jonathan Bradley Whited
 #++
 
 
@@ -28,14 +15,14 @@ require 'raketeer/version'
 ###
 # This file isn't actually included in the Gem package.
 # It's only used for testing RunTask.
-# 
-# @author Jonathan Bradley Whited (@esotericpig)
+#
+# @author Jonathan Bradley Whited
 # @since  0.2.2
 ###
 
-op = OptionParser.new() do |op|
+opt_parser = OptionParser.new do |op|
   op.banner = "Usage: #{op.program_name} [options]"
-  
+
   op.on('-h','--help','Print this help') do
     puts op
     exit
@@ -46,5 +33,5 @@ op = OptionParser.new() do |op|
   end
 end
 
-op.parse!()
-puts op
+opt_parser.parse!
+puts opt_parser

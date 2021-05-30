@@ -172,7 +172,7 @@ $ bundle exec rake -T
 [GNU LGPL v3+](LICENSE.txt)
 
 > Raketeer (<https://github.com/esotericpig/raketeer>)  
-> Copyright (c) 2019-2020 Jonathan Bradley Whited (@esotericpig)  
+> Copyright (c) 2019-2021 Jonathan Bradley Whited  
 > 
 > Raketeer is free software: you can redistribute it and/or modify  
 > it under the terms of the GNU Lesser General Public License as published by  
