@@ -18,7 +18,7 @@ module Raketeer
   ###
   class BumpVer < SemVer
     def initialize(version: nil,major: nil,minor: nil,patch: nil,prerelease: nil,build_meta: nil)
-      super
+      super()
 
       self.build_meta = build_meta
       self.major = major
