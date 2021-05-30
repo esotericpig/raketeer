@@ -28,16 +28,17 @@ With the RubyGems CLI package manager:
 In your *Gemspec* (*&lt;project&gt;.gemspec*):
 
 ```Ruby
-spec.add_development_dependency 'raketeer', '~> X.X.X'
+spec.add_development_dependency 'raketeer', '~> 0.2'
 ```
 
 In your *Gemfile*:
 
 ```Ruby
-gem 'raketeer', '~> X.X.X', :group => [:development, :test]
+gem 'raketeer', '~> 0.2', group: [:development, :test]
+
 # or...
-gem 'raketeer', :git => 'https://github.com/esotericpig/raketeer.git',
-                :tag => 'vX.X.X', :group => [:development, :test]
+gem 'raketeer', git: 'https://github.com/esotericpig/raketeer.git',
+                tag: 'v0.2.10', group: [:development, :test]
 ```
 
 Manually:

@@ -2,7 +2,14 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.9...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.10...master)
+
+## [v0.2.10] - 2021-05-30
+### Changed
+- Formatted all code using RuboCop.
+
+### Fixed
+- Updated Bundler and Gems because of GitHub security warning.
 
 ## [v0.2.9] - 2020-03-01
 ### Changed
@@ -83,16 +90,5 @@ Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [v0.1.0] - 2019-07-23
 ### Added
-- .gitignore
-- CHANGELOG.md
-- Gemfile
-- LICENSE.txt
-- README.md
-- Rakefile
-- raketeer.gemspec
-- lib/raketeer.rb
-- lib/raketeer/irb_task.rb
-- lib/raketeer/nokogiri_install_tasks.rb
-- lib/raketeer/nokogiri_installs.rb
-- lib/raketeer/raketeers.rb
-- lib/raketeer/version.rb
+- IRB task
+- Nokogiri installs
