@@ -2,7 +2,11 @@
 
 Format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.10...master)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.11...HEAD)
+
+## [v0.2.11] - 2021-06-15
+### Changed
+- Added SPDX license ID to source files.
 
 ## [v0.2.10] - 2021-05-30
 ### Changed
