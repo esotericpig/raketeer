@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.name        = 'raketeer'
   spec.version     = Raketeer::VERSION
   spec.authors     = ['Jonathan Bradley Whited']
-  spec.email       = ['bradley@esotericpig.com']
+  spec.email       = ['code@esotericpig.com']
   spec.licenses    = ['LGPL-3.0-or-later']
   spec.homepage    = 'https://github.com/esotericpig/raketeer'
   spec.summary     = 'Extra Ruby Rake Tasks.'
