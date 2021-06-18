@@ -5,8 +5,16 @@ All notable changes to this project will be documented in this file.
 Format is based on [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.11...HEAD)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.12...HEAD)
 -
+
+
+## [v0.2.12] - [2021-06-18](https://github.com/esotericpig/raketeer/compare/v0.2.11...v0.2.12)
+### Changed
+- Changed `bump` to also update GitHub compare links in Changelogs.
+    - Example link in Changelog:
+        - `## [v0.2.11] - [2021-06-15](https://github.com/esotericpig/raketeer/compare/v0.2.10...v0.2.11)`
+    - Updates `v0.2.10...v0.2.11` to `v0.2.11...<new_version>`.
 
 
 ## [v0.2.11] - [2021-06-15](https://github.com/esotericpig/raketeer/compare/v0.2.10...v0.2.11)

@@ -10,7 +10,7 @@
 
 
 module Raketeer
-  VERSION = '0.2.11'
+  VERSION = '0.2.12'
 
   # @since 0.2.4
   DEP_VERSIONS = {
