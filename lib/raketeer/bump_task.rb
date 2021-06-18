@@ -251,14 +251,34 @@ module Raketeer
               next
             end
 
-            bumper.line = match[0] << bumper.line
+            bumper.line = (match[0] << bumper.line)
 
             # Replace the date with today's date for the new Markdown header, if it exists
             match[2].sub!(/\d+\s*\-\s*\d+\s*\-\s*\d+(.*)\z/m,"#{Date.today.strftime('%F')}\\1")
+
+            # Fix the link if there is one:
+            #   https://github.com/esotericpig/raketeer/compare/v0.2.10...v0.2.11
+            versions_regex = /
+              (?<beg_ver>#{SemVer.regex(@strict)})
+              (?<sep>\.{3}[^\d\s]{,11}) # 11 for 'v', 'version', or something else.
+              (?<end_ver>#{SemVer.regex(@strict)})
+            /xmi
+            versions_match = match[2].match(versions_regex)
+
+            if versions_match
+              match[2].sub!(versions_regex,
+                "#{versions_match[:end_ver]}" \
+                "#{versions_match[:sep]}" \
+                "#{bumper.sem_ver}"
+              )
+            end
+
             bumper.line << match[2]
 
             bumper.add_change(bumper.line,push: true)
-            bumper.line << "\n" # Don't print this newline to the console
+
+            # Add after add_change(), so not printed to console.
+            bumper.line << "\n\n"
           end
 
           # We are adding a new Markdown header, so always set the line back to its original value
