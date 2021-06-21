@@ -55,7 +55,21 @@ module Raketeer
             sem_ver.major = 0 # There must always be a major version
           else
             sem_ver.major = 0 if sem_ver.major.nil?
+
+            old_major = sem_ver.major
             sem_ver.major += @major.to_i
+
+            if sem_ver.major != old_major
+              # Reset minor & patch so that 1.1.1 => 2.0.0.
+              # If the user wishes, minor & patch will continue
+              #   to be affected after ('+1.+1.+1').
+              sem_ver.minor = 0
+              sem_ver.patch = 0
+
+              # It's difficult to decide whether to set
+              #   pre-release and build-metadata to nil,
+              #   so just leave them.
+            end
           end
         end
 
@@ -66,7 +80,16 @@ module Raketeer
             sem_ver.minor = nil
           else
             sem_ver.minor = 0 if sem_ver.minor.nil?
+
+            old_minor = sem_ver.minor
             sem_ver.minor += @minor.to_i
+
+            if sem_ver.minor != old_minor
+              # Reset patch so that 1.1.1 => 1.2.0.
+              # If the user wishes, patch will continue
+              #   to be affected after ('X.+1.+1').
+              sem_ver.patch = 0
+            end
           end
         end
 
