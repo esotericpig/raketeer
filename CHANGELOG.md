@@ -5,8 +5,18 @@ All notable changes to this project will be documented in this file.
 Format is based on [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec/v2.0.0.html).
 
-## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.12...HEAD)
+## [[Unreleased]](https://github.com/esotericpig/raketeer/compare/v0.2.13...HEAD)
 -
+
+
+## [v0.2.13] - [2021-06-22](https://github.com/esotericpig/raketeer/compare/v0.2.12...v0.2.13)
+### Fixed
+- Changed `bump` to reset lower version numbers.
+    - If `v1.1.1`, major +1 will become => `v2.0.0` (not `v2.1.1`).
+    - If `v1.1.1`, minor +1 will become => `v1.2.0` (not `v1.2.1`).
+    - Patch +1 will continue to work the same.
+    - It's debatable whether this is a *fix* or a *change*, but I'm labeling it as a *fix*, as this way is more usable and expected.
+    - I debated whether to also drop off the pre-release and build-metadata, but it's a hard decision. Even though the version changed, maybe it's still a pre-release and/or still needs the same build-metadata. You could argue that bumping the major version should always drop it off, but I'm not sure. For now, they are unaffected by this change. In the future, major (only) +1 might also drop pre-release & build-metadata.
 
 
 ## [v0.2.12] - [2021-06-18](https://github.com/esotericpig/raketeer/compare/v0.2.11...v0.2.12)
