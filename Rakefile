@@ -5,11 +5,16 @@ require 'bundler/gem_tasks'
 
 require 'raketeer'
 require 'rake/clean'
+require 'yard'
 
 task default: []
 
 CLEAN.exclude('.git/','.github/','.idea/','stock/')
 CLOBBER.include('doc/')
+
+YARD::Rake::YardocTask.new(:doc) do |task|
+  task.options.push('--title',"Raketeer v#{Raketeer::VERSION}")
+end
 
 namespace :rt do
   require 'raketeer/all'
