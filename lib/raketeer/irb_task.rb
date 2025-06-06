@@ -3,23 +3,19 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-
 require 'rake'
-
 require 'rake/tasklib'
-
 require 'raketeer/util'
 
 module Raketeer
-  ###
-  # @author Jonathan Bradley Whited
-  # @since  0.1.0
-  ###
+  #
+  # @since 0.1.0
+  #
   class IRBTask < Rake::TaskLib
     attr_accessor :description
     attr_accessor :irb_cmd
@@ -29,7 +25,7 @@ module Raketeer
 
     alias_method :warning?,:warning
 
-    def initialize(name=:irb)
+    def initialize(name = :irb)
       super()
 
       @description = 'Open an irb session loaded with this library'
@@ -41,7 +37,7 @@ module Raketeer
       @irb_cmd.push('-r','rubygems')
       @irb_cmd.push('-r','bundler/setup')
 
-      yield self if block_given?
+      yield(self) if block_given?
 
       @irb_cmd.push('-r',@main_module) unless @main_module.nil?
       @irb_cmd << '-w' if @warning
@@ -51,7 +47,7 @@ module Raketeer
 
     def define
       desc @description
-      task @name do |task,args|
+      task @name do |_task,_args|
         sh(*@irb_cmd)
       end
     end

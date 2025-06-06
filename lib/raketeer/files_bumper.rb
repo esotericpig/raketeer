@@ -3,20 +3,18 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
-
 
 require 'raketeer/bump_ver'
 require 'raketeer/sem_ver'
 
 module Raketeer
-  ###
-  # @author Jonathan Bradley Whited
-  # @since  0.2.4
-  ###
+  #
+  # @since 0.2.4
+  #
   class FilesBumper
     attr_reader :bump_ver
     attr_reader :bump_ver_empty
@@ -55,7 +53,7 @@ module Raketeer
       @lines << line if push
     end
 
-    def bump_files(&block)
+    def bump_files
       @files.each do |filename|
         puts "[#{filename}]:"
 
@@ -74,7 +72,7 @@ module Raketeer
         File.foreach(filename) do |line|
           @line = line
 
-          block.call(self) if !@line.strip.empty?
+          yield(self) if !@line.strip.empty?
 
           @lines << @line
         end
@@ -91,7 +89,7 @@ module Raketeer
               file.puts @lines
             end
 
-            puts "#{@changes} change#{@changes == 1 ? '' : 's'} written"
+            puts "#{@changes} change#{'s' if @changes == 1} written"
           end
         else
           puts "Nothing written (up-to-date): #{@sem_ver}"

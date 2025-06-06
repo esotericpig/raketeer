@@ -3,21 +3,15 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
+#
+# @since 0.2.2
+#
 
 require 'raketeer/run_task'
-
-module Raketeer
-  ###
-  # @author Jonathan Bradley Whited
-  # @since  0.2.2
-  ###
-  module Run
-  end
-end
 
 Raketeer::RunTask.new # @since 0.2.2

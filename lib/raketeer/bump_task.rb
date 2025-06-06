@@ -3,11 +3,10 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
-
 
 require 'date'
 require 'rake'
@@ -18,10 +17,9 @@ require 'raketeer/sem_ver'
 require 'raketeer/util'
 
 module Raketeer
-  ###
-  # @author Jonathan Bradley Whited
-  # @since  0.2.4
-  ###
+  #
+  # @since 0.2.4
+  #
   class BumpTask < Rake::TaskLib
     attr_accessor :bump_bundle
     attr_accessor :bump_files # Looks for a version number
@@ -38,7 +36,7 @@ module Raketeer
     alias_method :dry_run?,:dry_run
     alias_method :strict?,:strict
 
-    def initialize(name=:bump)
+    def initialize(name = :bump)
       super()
 
       @bump_bundle = false
@@ -52,26 +50,26 @@ module Raketeer
       @ruby_var = 'VERSION'
       @strict = false
 
-      yield self if block_given?
+      yield(self) if block_given?
       define
     end
 
     def define
       desc 'Show/Set/Bump the version'
-      task @name,[:version] do |task,args|
+      task @name,[:version] do |_task,args|
         bump_all(BumpVer.new(
           version: args.version,
           major: ENV['major'],
           minor: ENV['minor'],
           patch: ENV['patch'],
           prerelease: ENV['pre'],
-          build_meta: ENV['build']
+          build_meta: ENV['build'],
         ))
       end
 
       namespace @name do
         desc 'Bump/Set the major version'
-        task :major,[:major] do |task,args|
+        task :major,[:major] do |_task,args|
           bump_ver = BumpVer.new(major: args.major)
 
           # You can't erase the major version (required)
@@ -81,7 +79,7 @@ module Raketeer
         end
 
         desc 'Bump/Set the minor version'
-        task :minor,[:minor] do |task,args|
+        task :minor,[:minor] do |_task,args|
           bump_ver = BumpVer.new(minor: args.minor)
           bump_ver.minor = '+1' if bump_ver.minor.nil?
 
@@ -89,7 +87,7 @@ module Raketeer
         end
 
         desc 'Bump/Set the patch version'
-        task :patch,[:patch] do |task,args|
+        task :patch,[:patch] do |_task,args|
           bump_ver = BumpVer.new(patch: args.patch)
           bump_ver.patch = '+1' if bump_ver.patch.nil?
 
@@ -97,7 +95,7 @@ module Raketeer
         end
 
         desc 'Set/Erase the pre-release version'
-        task :pre,[:pre] do |task,args|
+        task :pre,[:pre] do |_task,args|
           bump_ver = BumpVer.new(prerelease: args.pre)
           bump_ver.prerelease = '' if bump_ver.prerelease.nil?
 
@@ -105,7 +103,7 @@ module Raketeer
         end
 
         desc 'Set/Erase the build metadata'
-        task :build,[:build] do |task,args|
+        task :build,[:build] do |_task,args|
           bump_ver = BumpVer.new(build_meta: args.build)
           bump_ver.build_meta = '' if bump_ver.build_meta.nil?
 
@@ -151,7 +149,7 @@ module Raketeer
       # should be without making changes.
       if !@git_msg.nil?
         puts '[Git]:'
-        puts '= ' + (@git_msg % {version: sem_vers[0].to_s})
+        puts "= #{format(@git_msg,version: sem_vers[0].to_s)}"
       end
     end
 
@@ -212,7 +210,7 @@ module Raketeer
 
           match = [bumper.line[0..i - 1],match[1],match[-1]]
 
-          next if match.any? {|m| m.nil? || m.strip.empty? }
+          next if match.any? { |m| m.nil? || m.strip.empty? }
 
           orig_line = bumper.line.dup
           bumper.line = match[1]
@@ -237,7 +235,7 @@ module Raketeer
 
           match = [match[1],match[2],match[-1]]
 
-          next if match.any? {|m| m.nil? || m.strip.empty? }
+          next if match.any? { |m| m.nil? || m.strip.empty? }
 
           orig_line = bumper.line.dup
           bumper.line = match[1]
@@ -254,7 +252,7 @@ module Raketeer
             bumper.line = (match[0] << bumper.line)
 
             # Replace the date with today's date for the new Markdown header, if it exists
-            match[2].sub!(/\d+\s*\-\s*\d+\s*\-\s*\d+(.*)\z/m,"#{Date.today.strftime('%F')}\\1")
+            match[2].sub!(/\d+\s*-\s*\d+\s*-\s*\d+(.*)\z/m,"#{Date.today.strftime('%F')}\\1")
 
             # Fix the link if there is one:
             #   https://github.com/esotericpig/raketeer/compare/v0.2.10...v0.2.11
@@ -266,10 +264,11 @@ module Raketeer
             versions_match = match[2].match(versions_regex)
 
             if versions_match
-              match[2].sub!(versions_regex,
+              match[2].sub!(
+                versions_regex,
                 "#{versions_match[:end_ver]}" \
                 "#{versions_match[:sep]}" \
-                "#{bumper.sem_ver}"
+                "#{bumper.sem_ver}",
               )
             end
 
@@ -299,7 +298,7 @@ module Raketeer
         next if bumper.changes > 0 || !bumper.sem_ver.nil?
         next if (match = bumper.line.match(version_var_regex)).nil?
         next if match.length < 4
-        next if match[1..2].any? {|m| m.nil? || m.strip.empty? }
+        next if match[1..2].any? { |m| m.nil? || m.strip.empty? }
 
         orig_line = bumper.line.dup
         bumper.line = match[2]
@@ -330,32 +329,32 @@ module Raketeer
     end
 
     def print_help
-      puts <<-HELP
-rake #{@name}  # Print the current version
+      puts <<~HELP
+        rake #{@name}  # Print the current version
 
-# You can run a dry run for any task (will not write to files)
-rake #{@name} dryrun=true
+        # You can run a dry run for any task (will not write to files)
+        rake #{@name} dryrun=true
 
-rake #{@name}[1.2.3-alpha.4-beta.5]       # Set the version manually
-rake #{@name} major=1 minor=2 patch=3     # Set the version numbers
-rake #{@name} pre=alpha.4 build=beta.5    # Set the version extensions
-rake #{@name} major=+1 minor=+1 patch=+1  # Bump the version numbers by 1
-rake #{@name} major=+2 minor=+3 patch=+4  # Bump the version numbers by X
+        rake #{@name}[1.2.3-alpha.4-beta.5]       # Set the version manually
+        rake #{@name} major=1 minor=2 patch=3     # Set the version numbers
+        rake #{@name} pre=alpha.4 build=beta.5    # Set the version extensions
+        rake #{@name} major=+1 minor=+1 patch=+1  # Bump the version numbers by 1
+        rake #{@name} major=+2 minor=+3 patch=+4  # Bump the version numbers by X
 
-rake #{@name}:major          # Bump the major version by 1
-rake #{@name}:major[1]       # Set the major version to 1
-rake #{@name}:major[+2]      # Bump the major version by 2
-rake #{@name}:minor          # Bump the minor version by 1
-rake #{@name}:minor[2]       # Set the minor version to 2
-rake #{@name}:minor[+3]      # Bump the minor version by 3
-rake #{@name}:patch          # Bump the patch version by 1
-rake #{@name}:patch[3]       # Set the patch version to 3
-rake #{@name}:patch[+4]      # Bump the patch version by 4
-rake #{@name}:pre            # Erase the pre-release version
-rake #{@name}:pre[alpha.4]   # Set the pre-release version
-rake #{@name}:build          # Erase the build metadata
-rake #{@name}:build[beta.5]  # Set the build metadata
-rake #{@name}:bundle         # Bump the Gemfile.lock version
+        rake #{@name}:major          # Bump the major version by 1
+        rake #{@name}:major[1]       # Set the major version to 1
+        rake #{@name}:major[+2]      # Bump the major version by 2
+        rake #{@name}:minor          # Bump the minor version by 1
+        rake #{@name}:minor[2]       # Set the minor version to 2
+        rake #{@name}:minor[+3]      # Bump the minor version by 3
+        rake #{@name}:patch          # Bump the patch version by 1
+        rake #{@name}:patch[3]       # Set the patch version to 3
+        rake #{@name}:patch[+4]      # Bump the patch version by 4
+        rake #{@name}:pre            # Erase the pre-release version
+        rake #{@name}:pre[alpha.4]   # Set the pre-release version
+        rake #{@name}:build          # Erase the build metadata
+        rake #{@name}:build[beta.5]  # Set the build metadata
+        rake #{@name}:bundle         # Bump the Gemfile.lock version
       HELP
     end
   end

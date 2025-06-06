@@ -3,24 +3,18 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
+#
+# Defines all Nokogiri install tasks in your Rakefile.
+#
+# @since 0.1.0
+#
 
 require 'raketeer/nokogiri_install_tasks'
-
-module Raketeer
-  ###
-  # Defines all Nokogiri install tasks in your Rakefile.
-  #
-  # @author Jonathan Bradley Whited
-  # @since  0.1.0
-  ###
-  module NokogiriInstalls
-  end
-end
 
 Raketeer::NokogiriAPTTask.new # @since 0.1.0
 Raketeer::NokogiriDNFTask.new # @since 0.1.0

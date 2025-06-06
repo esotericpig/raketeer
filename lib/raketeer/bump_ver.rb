@@ -3,21 +3,19 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-
 require 'raketeer/sem_ver'
 
 module Raketeer
-  ###
+  #
   # Bump Version
   #
-  # @author Jonathan Bradley Whited
-  # @since  0.2.4
-  ###
+  # @since 0.2.4
+  #
   class BumpVer < SemVer
     def initialize(version: nil,major: nil,minor: nil,patch: nil,prerelease: nil,build_meta: nil)
       super()
@@ -41,7 +39,7 @@ module Raketeer
     end
 
     def init_str(obj)
-      return obj.nil? ? nil : obj.to_s.strip
+      return obj&.to_s&.strip
     end
 
     def bump!(sem_ver)
@@ -104,21 +102,8 @@ module Raketeer
           end
         end
 
-        if !@prerelease.nil?
-          if @prerelease.empty?
-            sem_ver.prerelease = nil
-          else
-            sem_ver.prerelease = @prerelease
-          end
-        end
-
-        if !@build_meta.nil?
-          if @build_meta.empty?
-            sem_ver.build_meta = nil
-          else
-            sem_ver.build_meta = @build_meta
-          end
-        end
+        sem_ver.prerelease = @prerelease.empty? ? nil : @prerelease unless @prerelease.nil?
+        sem_ver.build_meta = @build_meta.empty? ? nil : @build_meta unless @build_meta.nil?
       end
 
       return sem_ver

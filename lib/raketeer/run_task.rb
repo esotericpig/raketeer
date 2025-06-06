@@ -3,23 +3,19 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-
 require 'rake'
-
 require 'rake/tasklib'
-
 require 'raketeer/util'
 
 module Raketeer
-  ###
-  # @author Jonathan Bradley Whited
-  # @since  0.2.2
-  ###
+  #
+  # @since 0.2.2
+  #
   class RunTask < Rake::TaskLib
     attr_accessor :bin_dir
     attr_accessor :description
@@ -30,11 +26,11 @@ module Raketeer
 
     alias_method :warning?,:warning
 
-    def initialize(name=:run)
+    def initialize(name = :run)
       super()
 
       @bin_dir = 'bin'
-      @description = %Q(Run this project's main file: "rake #{name} -- --version")
+      @description = %(Run this project's main file: "rake #{name} -- --version")
       @executable = nil
       @name = name
       @warning = true
@@ -43,7 +39,7 @@ module Raketeer
       @run_cmd.push('-r','rubygems')
       @run_cmd.push('-r','bundler/setup')
 
-      yield self if block_given?
+      yield(self) if block_given?
 
       @executable = Util.find_main_executable(@bin_dir) if @executable.nil?
 
@@ -55,7 +51,7 @@ module Raketeer
 
     def define
       desc @description
-      task @name do |task,args|
+      task @name do |_task,_args|
         first_arg_index = -1
         name_s = @name.to_s
 

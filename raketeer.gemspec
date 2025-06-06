@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
   spec.licenses    = ['LGPL-3.0-or-later']
   spec.homepage    = 'https://github.com/esotericpig/raketeer'
   spec.summary     = 'Extra Ruby Rake Tasks.'
-  spec.description = <<-DESC
-Extra Ruby Rake Tasks for bumping the version, GitHub Packages, Nokogiri, IRB, running, etc.
+  spec.description = <<~DESC
+    Extra Ruby Rake Tasks for bumping the version, GitHub Packages, Nokogiri, IRB, running, etc.
   DESC
 
   spec.metadata = {
@@ -23,14 +23,14 @@ Extra Ruby Rake Tasks for bumping the version, GitHub Packages, Nokogiri, IRB, r
     'bug_tracker_uri'       => 'https://github.com/esotericpig/raketeer/issues',
   }
 
-  spec.required_ruby_version = '>= 2.1.10'
+  spec.required_ruby_version = '>= 2.3.0'
   spec.require_paths         = ['lib']
   spec.bindir                = 'bin'
   spec.executables           = []
 
+  # NOTE: Do not include `bin/raketeer`.
   spec.files = [
     Dir.glob("{#{spec.require_paths.join(',')}}/**/*.{erb,rb}"),
-    Dir.glob("#{spec.bindir}/*"),
     Dir.glob('{spec,test,yard}/**/*.{erb,rb}'),
     %W[Gemfile #{spec.name}.gemspec Rakefile],
     %w[CHANGELOG.md LICENSE.txt README.md],

@@ -3,25 +3,23 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-
 module Raketeer
-  ###
+  #
   # Semantic Version
   #
   # This is a non-strict version of Semantic Versioning v2.0.0.
   #
-  # @author Jonathan Bradley Whited
-  # @since  0.2.4
-  # @see    https://semver.org
-  ###
+  # @since 0.2.4
+  # @see https://semver.org
+  #
   class SemVer
-    REGEX = /\d+(\.\d+)?(\.\d+)?(\-[0-9A-Za-z\-\.]+)?(\+[0-9A-Za-z\-\.]+)?/.freeze
-    STRICT_REGEX = /\d+\.\d+\.\d+(\-[0-9A-Za-z\-\.]+)?(\+[0-9A-Za-z\-\.]+)?/.freeze
+    REGEX = /\d+(\.\d+)?(\.\d+)?(-[0-9A-Za-z\-.]+)?(\+[0-9A-Za-z\-.]+)?/.freeze
+    STRICT_REGEX = /\d+\.\d+\.\d+(-[0-9A-Za-z\-.]+)?(\+[0-9A-Za-z\-.]+)?/.freeze
 
     attr_accessor :build_meta
     attr_accessor :major
@@ -39,11 +37,17 @@ module Raketeer
       @version = nil
     end
 
-    def initialize_copy(orig)
-      super(orig)
+    def initialize_dup(orig)
+      super
+      init_copy(orig,:dup)
+    end
 
-      copy = caller[0].to_s.include?('clone') ? :clone : :dup
+    def initialize_clone(orig)
+      super
+      init_copy(orig,:clone)
+    end
 
+    def init_copy(_orig,copy)
       @build_meta = @build_meta.__send__(copy)
       @major = @major.__send__(copy)
       @minor = @minor.__send__(copy)
@@ -100,7 +104,7 @@ module Raketeer
              @version.nil?
     end
 
-    def self.regex(strict=false)
+    def self.regex(strict = false)
       return strict ? STRICT_REGEX : REGEX
     end
 

@@ -3,20 +3,18 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-
 module Raketeer
-  ###
-  # @author Jonathan Bradley Whited
-  # @since  0.2.2
-  ###
+  #
+  # @since 0.2.2
+  #
   module Util
     # @since 0.2.4
-    TRUE_BOOLS = %w[ 1 on t true y yes ].freeze
+    TRUE_BOOLS = %w[1 on t true y yes].freeze
 
     # This is pretty hacky...
     #
@@ -35,7 +33,7 @@ module Raketeer
       return nil
     end
 
-    def self.find_main_executable(bin_dir='bin')
+    def self.find_main_executable(bin_dir = 'bin')
       # Try the bin/ dir
       main_exe = Dir.glob(File.join(bin_dir,'*'))
 
@@ -53,7 +51,7 @@ module Raketeer
       return nil
     end
 
-    def self.find_main_module(lib_dir='lib')
+    def self.find_main_module(lib_dir = 'lib')
       # Try the lib/ dir
       main_file = Dir.glob(File.join(lib_dir,'*.rb'))
 
@@ -68,7 +66,7 @@ module Raketeer
     end
 
     # @since 0.2.7
-    def self.get_env_bool(env_name,def_value=nil)
+    def self.get_env_bool(env_name,def_value = nil)
       value = ENV[env_name]
 
       if value.nil? || (value = value.to_s.strip).empty?

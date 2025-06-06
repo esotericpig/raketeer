@@ -4,23 +4,21 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
-
 
 require 'optparse'
 
 require 'raketeer/version'
 
-###
-# This file isn't actually included in the Gem package.
+#
+# This file isn't included in the Gem package.
 # It's only used for testing RunTask.
 #
-# @author Jonathan Bradley Whited
-# @since  0.2.2
-###
+# @since 0.2.2
+#
 
 opt_parser = OptionParser.new do |op|
   op.banner = "Usage: #{op.program_name} [options]"

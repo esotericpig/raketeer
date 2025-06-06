@@ -1,68 +1,69 @@
 # Raketeer
 
 [![Gem Version](https://badge.fury.io/rb/raketeer.svg)](https://badge.fury.io/rb/raketeer)
-
-[![Source Code](https://img.shields.io/badge/source-github-%23A0522D.svg?style=for-the-badge)](https://github.com/esotericpig/raketeer)
-[![Changelog](https://img.shields.io/badge/changelog-md-%23A0522D.svg?style=for-the-badge)](CHANGELOG.md)
-[![License](https://img.shields.io/github/license/esotericpig/raketeer.svg?color=%23A0522D&style=for-the-badge)](LICENSE.txt)
+[![Source Code](https://img.shields.io/badge/source-github-%23211F1F.svg)](https://github.com/esotericpig/raketeer)
+[![Changelog](https://img.shields.io/badge/changelog-md-%23A0522D.svg)](CHANGELOG.md)
+[![License](https://img.shields.io/github/license/esotericpig/raketeer.svg)](LICENSE.txt)
 
 Extra Ruby Rake Tasks.
 
 A [CLI app](https://github.com/esotericpig/raketary) is also available that uses these tasks, which is useful for tasks like *bump* (which bumps the version for your RubyGem project) so that you don't have to include this Gem as a development dependency for every project.
 
-## Contents
+## // Contents
 
-- [Setup](#setup)
-- [Using](#using)
-- [Hacking](#hacking)
-- [License](#license)
+- [Setup](#-setup)
+- [Using](#-using)
+- [Hacking](#-hacking)
+- [License](#-license)
 
-## [Setup](#contents)
+## [//](#-contents) Setup
 
 Pick your poison...
 
 With the RubyGems CLI package manager:
 
-`$ gem install raketeer`
+```bash
+gem install raketeer
+```
 
-In your *Gemspec* (*&lt;project&gt;.gemspec*):
+In your *Gemspec*:
 
-```Ruby
-spec.add_development_dependency 'raketeer', '~> 0.2'
+```ruby
+spec.add_development_dependency 'raketeer', '~> X.X'
 ```
 
 In your *Gemfile*:
 
-```Ruby
-gem 'raketeer', '~> 0.2', group: [:development, :test]
+```ruby
+gem 'raketeer', '~> X.X', group: %i[development test]
 
 # or...
 gem 'raketeer', git: 'https://github.com/esotericpig/raketeer.git',
-                tag: 'v0.2.10', group: [:development, :test]
+                branch: 'main', group: %i[development test]
 ```
 
-Manually:
+From source:
 
-```
-$ git clone 'https://github.com/esotericpig/raketeer.git'
-$ cd raketeer
-$ bundle install
-$ bundle exec rake install:local
+```bash
+git clone 'https://github.com/esotericpig/raketeer.git'
+cd raketeer
+bundle install
+bundle exec rake install:local
 ```
 
-## [Using](#contents)
+## [//](#-contents) Using
 
 **Rakefile**
 
 In your *Rakefile*, you can either include all tasks...
 
-```Ruby
+```ruby
 require 'raketeer/all'
 ```
 
 Or, include the specific tasks that you need:
 
-```Ruby
+```ruby
 require 'raketeer/bump'
 require 'raketeer/github_pkg'
 require 'raketeer/irb'
@@ -70,9 +71,9 @@ require 'raketeer/nokogiri_installs'
 require 'raketeer/run'
 ```
 
-If you have conflicting tasks and/or you want to see what tasks have been included, you can put them in a namespace:
+If you have conflicting tasks and/or you want to see what tasks have been included (with `rake -T`), you can put them in a namespace:
 
-```Ruby
+```ruby
 namespace :rt do
   require 'raketeer/all'
 end
@@ -80,7 +81,7 @@ end
 
 **Included Tasks**
 
-```
+```bash
 rake bump[version]      # Show/Set/Bump the version
 rake bump:build[build]  # Set/Erase the build metadata
 rake bump:bundle        # Bump the Gemfile.lock version
@@ -97,10 +98,9 @@ rake nokogiri_other     # Install Nokogiri libs for other OSes
 rake run                # Run this project's main file: "rake run -- --version"
 ```
 
-**bump:help**
+**rake bump:help**
 
-```
-$ rake bump:help
+```bash
 rake bump  # Print the current version
 
 # You can run a dry run for any task (will not write to files)
@@ -142,38 +142,38 @@ If you need more control, for now, please look at the accessors of each task (be
 
 For example, in your *Rakefile*:
 
-```Ruby
+```ruby
 require 'raketeer/bump_task'
 
-Raketeer::BumpTask.new() do |task|
+Raketeer::BumpTask.new do |task|
   task.strict = true
 end
 ```
 
-```Ruby
+```ruby
 require 'raketeer/github_pkg_task'
 
-Raketeer::GitHubPkgTask.new() do |task|
+Raketeer::GitHubPkgTask.new do |task|
   task.deps << 'test'
   task.username = 'esotericpig'
 end
 ```
 
-## [Hacking](#contents)
+## [//](#-contents) Hacking
 
-```
+```bash
 $ git clone 'https://github.com/esotericpig/raketeer.git'
 $ cd raketeer
 $ bundle install
 $ bundle exec rake -T
 ```
 
-## [License](#contents)
+## [//](#-contents) License
 
 [GNU LGPL v3+](LICENSE.txt)
 
 > Raketeer (<https://github.com/esotericpig/raketeer>)  
-> Copyright (c) 2019-2021 Jonathan Bradley Whited  
+> Copyright (c) 2019-2025 Bradley Whited  
 > 
 > Raketeer is free software: you can redistribute it and/or modify  
 > it under the terms of the GNU Lesser General Public License as published by  

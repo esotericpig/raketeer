@@ -3,21 +3,15 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
+#
+# @since 0.2.0
+#
 
 require 'raketeer/irb_task'
-
-module Raketeer
-  ###
-  # @author Jonathan Bradley Whited
-  # @since  0.2.0
-  ###
-  module IRB
-  end
-end
 
 Raketeer::IRBTask.new # @since 0.2.0

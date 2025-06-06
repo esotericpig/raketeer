@@ -3,11 +3,10 @@
 
 #--
 # This file is part of Raketeer.
-# Copyright (c) 2019-2021 Jonathan Bradley Whited
+# Copyright (c) 2019 Bradley Whited
 #
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
-
 
 require 'raketeer/bump_task'
 require 'raketeer/bump_ver'
@@ -20,10 +19,8 @@ require 'raketeer/sem_ver'
 require 'raketeer/util'
 require 'raketeer/version'
 
-
-###
-# @author Jonathan Bradley Whited
-# @since  0.1.0
-###
+#
+# @since 0.1.0
+#
 module Raketeer
 end
