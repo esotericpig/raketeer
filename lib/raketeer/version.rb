@@ -9,7 +9,7 @@
 #++
 
 module Raketeer
-  VERSION = '0.2.13'
+  VERSION = '0.2.14'
 
   # @since 0.2.4
   def self.try_require_dev(gem_name)
