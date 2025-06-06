@@ -33,7 +33,7 @@ module Raketeer
 
     def self.find_main_executable(bin_dir = 'bin')
       # Try the bin/ dir.
-      main_exe = Dir.glob(File.join(bin_dir,'*'))
+      main_exe = Dir.glob("#{bin_dir}/*")
 
       return File.basename(main_exe[0]) if main_exe.length == 1
 
@@ -51,7 +51,7 @@ module Raketeer
 
     def self.find_main_module(lib_dir = 'lib')
       # Try the lib/ dir.
-      main_file = Dir.glob(File.join(lib_dir,'*.rb'))
+      main_file = Dir.glob("#{lib_dir}/*.rb")
 
       return File.basename(main_file[0],'.*') if main_file.length == 1
 

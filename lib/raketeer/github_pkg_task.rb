@@ -45,7 +45,7 @@ module Raketeer
         sh_cmd.push('push')
         sh_cmd.push('--key','github')
         sh_cmd.push('--host',"https://rubygems.pkg.github.com/#{username}")
-        sh_cmd.push(*Dir.glob(File.join('pkg','*.gem'))) # Is this okay for multiple gems?
+        sh_cmd.push(*Dir.glob('pkg/*.gem')) # TODO: Is this okay for multiple gems?
 
         sh(*sh_cmd)
       end

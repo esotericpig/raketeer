@@ -44,7 +44,7 @@ module Raketeer
       @dry_run = false
       @git_msg = "git commit -m 'Bump version to v%{version}'"
       @name = name
-      @ruby_files = Rake::FileList[File.join('lib','**','version.rb')]
+      @ruby_files = Rake::FileList['lib/**/version.rb']
       @ruby_var = 'VERSION'
       @strict = false
 
