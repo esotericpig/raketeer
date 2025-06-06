@@ -8,12 +8,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-#
-# Defines all Nokogiri install tasks in your Rakefile.
-#
-# @since 0.1.0
-#
-
 require 'raketeer/nokogiri_install_tasks'
 
 Raketeer::NokogiriAPTTask.new # @since 0.1.0

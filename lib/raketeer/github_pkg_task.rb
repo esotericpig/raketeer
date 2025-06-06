@@ -13,9 +13,7 @@ require 'rake/tasklib'
 require 'raketeer/util'
 
 module Raketeer
-  #
   # @since 0.2.8
-  #
   class GitHubPkgTask < Rake::TaskLib
     attr_accessor :deps
     attr_accessor :description

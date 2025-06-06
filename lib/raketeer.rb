@@ -19,8 +19,6 @@ require 'raketeer/sem_ver'
 require 'raketeer/util'
 require 'raketeer/version'
 
-#
 # @since 0.1.0
-#
 module Raketeer
 end

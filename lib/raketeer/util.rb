@@ -9,9 +9,7 @@
 #++
 
 module Raketeer
-  #
   # @since 0.2.2
-  #
   module Util
     # @since 0.2.4
     TRUE_BOOLS = %w[1 on t true y yes].freeze
@@ -34,12 +32,12 @@ module Raketeer
     end
 
     def self.find_main_executable(bin_dir = 'bin')
-      # Try the bin/ dir
+      # Try the bin/ dir.
       main_exe = Dir.glob(File.join(bin_dir,'*'))
 
       return File.basename(main_exe[0]) if main_exe.length == 1
 
-      # Try using the main module
+      # Try using the main module.
       main_mod = find_main_module
 
       if !main_mod.nil?
@@ -52,12 +50,12 @@ module Raketeer
     end
 
     def self.find_main_module(lib_dir = 'lib')
-      # Try the lib/ dir
+      # Try the lib/ dir.
       main_file = Dir.glob(File.join(lib_dir,'*.rb'))
 
       return File.basename(main_file[0],'.*') if main_file.length == 1
 
-      # Try the Gemspec
+      # Try the Gemspec.
       main_file = Dir.glob('*.gemspec')
 
       return File.basename(main_file[0],'.*') if main_file.length == 1

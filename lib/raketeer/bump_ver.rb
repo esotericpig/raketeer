@@ -11,11 +11,9 @@
 require 'raketeer/sem_ver'
 
 module Raketeer
-  #
   # Bump Version
   #
   # @since 0.2.4
-  #
   class BumpVer < SemVer
     def initialize(version: nil,major: nil,minor: nil,patch: nil,prerelease: nil,build_meta: nil)
       super()
@@ -50,7 +48,7 @@ module Raketeer
           if @major.is_a?(Integer)
             sem_ver.major = @major
           elsif @major.empty?
-            sem_ver.major = 0 # There must always be a major version
+            sem_ver.major = 0 # There must always be a major version.
           else
             sem_ver.major = 0 if sem_ver.major.nil?
 
@@ -102,8 +100,12 @@ module Raketeer
           end
         end
 
-        sem_ver.prerelease = @prerelease.empty? ? nil : @prerelease unless @prerelease.nil?
-        sem_ver.build_meta = @build_meta.empty? ? nil : @build_meta unless @build_meta.nil?
+        if !@prerelease.nil?
+          sem_ver.prerelease = @prerelease.empty? ? nil : @prerelease
+        end
+        if !@build_meta.nil?
+          sem_ver.build_meta = @build_meta.empty? ? nil : @build_meta
+        end
       end
 
       return sem_ver

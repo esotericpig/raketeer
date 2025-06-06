@@ -8,10 +8,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-#
-# @since 0.2.4
-#
-
 require 'raketeer/bump_task'
 
 Raketeer::BumpTask.new # @since 0.2.4

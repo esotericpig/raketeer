@@ -12,9 +12,7 @@ require 'raketeer/bump_ver'
 require 'raketeer/sem_ver'
 
 module Raketeer
-  #
   # @since 0.2.4
-  #
   class FilesBumper
     attr_reader :bump_ver
     attr_reader :bump_ver_empty
@@ -63,7 +61,7 @@ module Raketeer
           next
         end
 
-        @changes = 0 # For possible future use
+        @changes = 0 # For possible future use.
         @lines = []
         @sem_ver = nil
 

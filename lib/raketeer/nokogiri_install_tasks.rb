@@ -12,9 +12,7 @@ require 'rake'
 require 'rake/tasklib'
 
 module Raketeer
-  #
   # @since 0.1.0
-  #
   class NokogiriInstallTask < Rake::TaskLib
     attr_accessor :description
     attr_accessor :install_cmd
@@ -42,9 +40,7 @@ module Raketeer
     end
   end
 
-  #
   # @since 0.1.0
-  #
   class NokogiriAPTTask < NokogiriInstallTask
     def initialize(name = :nokogiri_apt,&block)
       super(name)
@@ -62,9 +58,7 @@ module Raketeer
     end
   end
 
-  #
   # @since 0.1.0
-  #
   class NokogiriDNFTask < NokogiriInstallTask
     def initialize(name = :nokogiri_dnf,&block)
       super(name)
@@ -81,9 +75,7 @@ module Raketeer
     end
   end
 
-  #
   # @since 0.1.0
-  #
   class NokogiriOtherTask < NokogiriInstallTask
     def initialize(name = :nokogiri_other,&block)
       super(name)

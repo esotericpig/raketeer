@@ -9,14 +9,12 @@
 #++
 
 module Raketeer
-  #
   # Semantic Version
   #
   # This is a non-strict version of Semantic Versioning v2.0.0.
   #
   # @since 0.2.4
   # @see https://semver.org
-  #
   class SemVer
     REGEX = /\d+(\.\d+)?(\.\d+)?(-[0-9A-Za-z\-.]+)?(\+[0-9A-Za-z\-.]+)?/.freeze
     STRICT_REGEX = /\d+\.\d+\.\d+(-[0-9A-Za-z\-.]+)?(\+[0-9A-Za-z\-.]+)?/.freeze
@@ -57,13 +55,13 @@ module Raketeer
     end
 
     def self.parse(str)
-      # Parsing backwards makes the logic easier
+      # Parsing backwards makes the logic easier.
       build_meta = str.split('+',2)
       prerelease = build_meta[0].split('-',2)
       numbers = prerelease[0].split('.',3)
 
       sem_ver = SemVer.new
-      sem_ver.major = numbers[0].to_i # There must always be a major version
+      sem_ver.major = numbers[0].to_i # There must always be a major version.
 
       if numbers.length >= 2
         minor = numbers[1].strip

@@ -13,9 +13,7 @@ require 'rake/tasklib'
 require 'raketeer/util'
 
 module Raketeer
-  #
   # @since 0.1.0
-  #
   class IRBTask < Rake::TaskLib
     attr_accessor :description
     attr_accessor :irb_cmd

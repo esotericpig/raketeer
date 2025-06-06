@@ -10,15 +10,12 @@
 #++
 
 require 'optparse'
-
 require 'raketeer/version'
 
-#
 # This file isn't included in the Gem package.
 # It's only used for testing RunTask.
 #
 # @since 0.2.2
-#
 
 opt_parser = OptionParser.new do |op|
   op.banner = "Usage: #{op.program_name} [options]"

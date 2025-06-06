@@ -8,12 +8,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-#
-# Defines all Raketeer tasks in your Rakefile.
-#
-# @since 0.2.0
-#
-
 require 'raketeer/bump' # @since 0.2.4
 require 'raketeer/github_pkg' # @since 0.2.8
 require 'raketeer/irb' # @since 0.2.0

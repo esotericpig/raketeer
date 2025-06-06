@@ -8,10 +8,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-#
-# @since 0.2.0
-#
-
 require 'raketeer/irb_task'
 
 Raketeer::IRBTask.new # @since 0.2.0

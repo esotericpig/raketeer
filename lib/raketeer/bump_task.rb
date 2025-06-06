@@ -17,18 +17,16 @@ require 'raketeer/sem_ver'
 require 'raketeer/util'
 
 module Raketeer
-  #
   # @since 0.2.4
-  #
   class BumpTask < Rake::TaskLib
     attr_accessor :bump_bundle
-    attr_accessor :bump_files # Looks for a version number
+    attr_accessor :bump_files # Looks for a version number.
     attr_accessor :bundle_cmd
-    attr_accessor :changelogs # Looks for 'Unreleased' & a Markdown header
+    attr_accessor :changelogs # Looks for 'Unreleased' & a Markdown header.
     attr_accessor :dry_run
     attr_accessor :git_msg
     attr_accessor :name
-    attr_accessor :ruby_files # Looks for {ruby_var}
+    attr_accessor :ruby_files # Looks for {ruby_var}.
     attr_accessor :ruby_var
     attr_accessor :strict
 
@@ -72,7 +70,7 @@ module Raketeer
         task :major,[:major] do |_task,args|
           bump_ver = BumpVer.new(major: args.major)
 
-          # You can't erase the major version (required)
+          # You can't erase the major version (required).
           bump_ver.major = '+1' if bump_ver.major.nil? || bump_ver.major.empty?
 
           bump_all(bump_ver)
@@ -128,7 +126,7 @@ module Raketeer
 
       sem_vers = []
 
-      # Order matters for outputting the most accurate version
+      # NOTE: Order matters for outputting the most accurate version.
       sem_vers << bump_ruby_files(bump_ver)
       sem_vers << bump_bump_files(bump_ver)
       sem_vers << bump_changelogs(bump_ver)
@@ -182,7 +180,7 @@ module Raketeer
       sh(*sh_cmd,verbose: false)
     end
 
-    # @see https://keepachangelog.com/en/1.0.0/
+    # @see https://keepachangelog.com/en/1.1.0
     def bump_changelogs(bump_ver)
       return nil if @changelogs.empty?
 
@@ -203,7 +201,7 @@ module Raketeer
         if bumper.line =~ unreleased_regex
           next if @unreleased_bumped
 
-          # Match from the end, in case the URL has a number (like '%20')
+          # Match from the end, in case the URL has a number (like '%20').
           match = bumper.line.match(/(#{SemVer.regex(@strict)})(\.{3}.*)\z/m)
 
           next if match.nil? || match.length < 3 || (i = match.begin(0)) < 1
@@ -251,7 +249,7 @@ module Raketeer
 
             bumper.line = (match[0] << bumper.line)
 
-            # Replace the date with today's date for the new Markdown header, if it exists
+            # Replace the date with today's date for the new Markdown header, if it exists.
             match[2].sub!(/\d+\s*-\s*\d+\s*-\s*\d+(.*)\z/m,"#{Date.today.strftime('%F')}\\1")
 
             # Fix the link if there is one:
@@ -280,7 +278,7 @@ module Raketeer
             bumper.line << "\n\n"
           end
 
-          # We are adding a new Markdown header, so always set the line back to its original value
+          # We are adding a new Markdown header, so always set the line back to its original value.
           bumper.line = orig_line
         end
       end

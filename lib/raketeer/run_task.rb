@@ -13,9 +13,7 @@ require 'rake/tasklib'
 require 'raketeer/util'
 
 module Raketeer
-  #
   # @since 0.2.2
-  #
   class RunTask < Rake::TaskLib
     attr_accessor :bin_dir
     attr_accessor :description
@@ -67,7 +65,7 @@ module Raketeer
           end
         end
 
-        # In case this is called more than once in some way
+        # In case this is called more than once in some way.
         sh_cmd = @run_cmd.dup
 
         # Are there args for the run command?

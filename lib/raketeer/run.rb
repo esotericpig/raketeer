@@ -8,10 +8,6 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #++
 
-#
-# @since 0.2.2
-#
-
 require 'raketeer/run_task'
 
 Raketeer::RunTask.new # @since 0.2.2
